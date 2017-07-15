@@ -15,4 +15,9 @@ class Category extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    function subcategories()
+    {
+        return $this->hasMany('App\Subcategory')->orderBy('name');
+    }
 }
