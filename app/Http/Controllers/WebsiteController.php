@@ -52,7 +52,8 @@ class WebsiteController extends Controller
         $website->save();
 
         $success = true;
-        return back();
+
+        return redirect()->route('home')->with('status', 'Twoja strona została pomyślnie wysłana i pojawi się w katalogu po sprawdzeniu jej przez administratora.');
     }
 
     /**

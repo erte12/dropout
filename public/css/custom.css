@@ -1,3 +1,16 @@
+#main-page {
+    margin-top: 60px;
+}
+
 textarea#description {
     resize: none;
+}
+
+.panel-heading a {
+    color: white;
+}
+
+.panel-heading a:hover {
+    color: white;
+    text-decoration: none;
 }

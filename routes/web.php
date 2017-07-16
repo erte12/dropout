@@ -11,11 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('/panel', 'PanelController@index')->name('panel');
 Route::resource('/website', 'WebsiteController', ['except' => 'index']);
+Route::resource('/category', 'CategoryController', ['except' => 'index']);
+Route::resource('/subcategory', 'SubcategoryController', ['except' => 'index']);

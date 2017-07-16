@@ -66,6 +66,7 @@ class DatabaseSeeder extends Seeder
                  * Websites seeds
                  *
                  */
+                $subcategory_id_for_website_to_database = ($category_id - 1) * self::NUMBER_OF_CATEGORIES + $subcategory_id;
                 for($website_id = 1; $website_id <= $faker->numberBetween(1, self::MAX_NUMBER_OF_WEBSITES_PER_SUBCATEGORY); $website_id++)
                 {
                     /**
@@ -78,7 +79,7 @@ class DatabaseSeeder extends Seeder
                         DB::table('websites')->insert([
                             'user_id' => $faker->numberBetween(1,self::NUMBER_OF_USERS),
                             'name' => $faker->firstName,
-                            'subcategory_id' => $subcategory_id,
+                            'subcategory_id' => $subcategory_id_for_website_to_database,
                             'url' => substr($url, 0, $last_index),
                             'description' => $faker->paragraph($nbSentences = 3, $variableNbSentences = true),
                         ]);

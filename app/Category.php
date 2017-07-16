@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Collection;
 
 class Category extends Model
 {
@@ -16,8 +17,17 @@ class Category extends Model
      */
     protected $dates = ['deleted_at'];
 
+    /**
+     * Returns all subcategories of given category
+     * @return \App\Subcategory
+     */
     function subcategories()
     {
         return $this->hasMany('App\Subcategory')->orderBy('name');
+    }
+
+    function websites()
+    {
+        return $this->hasManyThrough('App\Website', 'App\Subcategory');
     }
 }
