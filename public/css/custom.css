@@ -14,3 +14,20 @@ textarea#description {
     color: white;
     text-decoration: none;
 }
+
+.website img {
+    float: none;
+    margin: 0 auto 10px auto;
+}
+
+a.website, a:hover.website{
+    color: #636b6f;
+}
+
+@media (min-width: 760px) {
+    .website img {
+        margin-right: 10px;
+        margin-bottom: 0px;
+        float: left;
+    }
+}

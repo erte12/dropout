@@ -20,4 +20,9 @@ class Website extends Model
     {
         return $this->belongsTo('App\Subcategory');
     }
+
+    function category()
+    {
+        return $this->belongsTo('App\Category');
+    }
 }

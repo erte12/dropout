@@ -35,20 +35,21 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">Strony w tej kategorii</div>
                 <div class="panel-body">
-                    <div class="text-center">
-                        {{ $websites }}
-                    </div>
-                    @foreach ($websites as $website)
-                        <div class="panel panel-default">
-                            <div class="panel-heading">{{ $website->name }}</div>
-                            <div class="panel-body text-justify">
-                                {{ $website->description }}
-                            </div>
+                    @if (empty($websites))
+                        <div class="text-center">
+                            <h4><strong>Ta kategoria jest pusta</strong></h4>
                         </div>
-                    @endforeach
-                    <div class="text-center">
-                        {{ $websites }}
-                    </div>
+                    @else
+                        <div class="text-center">
+                            {{ $websites }}
+                        </div>
+                        @foreach ($websites as $website)
+                            @include('include.website_list_element')
+                        @endforeach
+                        <div class="text-center">
+                            {{ $websites }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

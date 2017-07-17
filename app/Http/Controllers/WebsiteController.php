@@ -25,7 +25,7 @@ class WebsiteController extends Controller
     public function create()
     {
         $categories = Category::orderBy('name')->get();
-        return view('websites.create', compact('categories'));
+        return view('website.create', compact('categories'));
     }
 
     /**
@@ -64,7 +64,8 @@ class WebsiteController extends Controller
      */
     public function show($id)
     {
-        //
+        $website = Website::findOrFail($id);
+        return view('website.show', compact('website'));
     }
 
     /**

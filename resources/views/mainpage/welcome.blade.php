@@ -42,12 +42,7 @@
                 <div class="panel-heading">Ostatnio dodane</div>
                 <div class="panel-body">
                 @foreach ($websites as $website)
-                    <div class="panel panel-default">
-                        <div class="panel-heading">{{ $website->name }}</div>
-                        <div class="panel-body text-justify">
-                            {{ $website->description }}
-                        </div>
-                    </div>
+                    @include('include.website_list_element')
                 @endforeach
                 </div>
             </div>
