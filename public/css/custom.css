@@ -20,8 +20,16 @@ textarea#description {
     margin: 0 auto 10px auto;
 }
 
+.list-group.website {
+    margin-top: 30px;
+}
+
 a.website, a:hover.website{
     color: #636b6f;
+}
+
+.glyphicon {
+    margin-right: 5px;
 }
 
 @media (min-width: 760px) {

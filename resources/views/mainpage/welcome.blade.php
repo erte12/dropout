@@ -1,11 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-primary">
-                <div class="panel-heading">Kategorie</div>
+                <div class="panel-heading">
+                    <a href="{{ url('/') }}">
+                        <span class="glyphicon glyphicon-home"></span>
+                        Strona główna
+                    </a>
+                </div>
 
                 <div class="panel-body">
                     @if (session('status'))
@@ -39,7 +45,10 @@
             </div>
 
             <div class="panel panel-primary">
-                <div class="panel-heading">Ostatnio dodane</div>
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-pushpin"></span>
+                    Ostatnio dodane
+                </div>
                 <div class="panel-body">
                 @foreach ($websites as $website)
                     @include('include.website_list_element')

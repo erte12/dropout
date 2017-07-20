@@ -13,6 +13,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
 </head>
 <body>
     <div id="app">
@@ -43,6 +45,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
+
                         <li><a href="{{ url('/') }}">Strona główna</a></li>
                         @if (Auth::guest())
                             <li><a href="{{ route('login') }}">Zaloguj się</a></li>

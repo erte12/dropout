@@ -5,7 +5,9 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-primary">
-                <div class="panel-heading"><a href="{{ url('/') }}">Strona główna</a> -> <a href="{{ url('/category/' . $category->id) }}">{{ $category->name }}</a></div>
+                <div class="panel-heading">
+                    <a href="{{ url('/') }}"><span class="glyphicon glyphicon-home"></span> Strona główna</a> -> <a href="{{ url('/category/' . $category->id) }}">{{ $category->name }}</a>
+                </div>
 
                 <div class="panel-body">
                     <div class="col-md-4">
@@ -33,7 +35,9 @@
             </div>
 
             <div class="panel panel-primary">
-                <div class="panel-heading">Strony w tej kategorii</div>
+                <div class="panel-heading">
+                    <a href="{{ url('/') }}"><span class="glyphicon glyphicon-home"></span> Strona główna</a> -> <a href="{{ url('/category/' . $category->id) }}">{{ $category->name }}</a>
+                </div>
                 <div class="panel-body">
                     @if (empty($websites))
                         <div class="text-center">

@@ -25,4 +25,9 @@ class Website extends Model
     {
         return $this->belongsTo('App\Category');
     }
+
+    function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

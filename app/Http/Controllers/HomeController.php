@@ -15,11 +15,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $categories = Category::orderBy('name')->get();
+        $categories = Category::orderBy('name')
+        ->with('subcategories')
+        ->get();
         $websites = Website::latest()->limit(5)->get();
 
         /**
-         * Deviding categories per two columns and redricting them to view via two arrays
+         * Deviding categories per three columns and redricting them to view via arrays
          */
         $categories_per_column = $this->categories_per_column($categories->count());
         $categories_col_1 = array();
@@ -40,7 +42,7 @@ class HomeController extends Controller
             }
         }
 
-        return view('mainpage.welcome', compact('categories_col_1', 'categories_col_2', 'categories_col_3', 'websites'));
+        return view('mainpage.welcome', compact('categories', 'categories_col_1', 'categories_col_2', 'categories_col_3', 'websites'));
     }
 
     private function categories_per_column($categories_number)
