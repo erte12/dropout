@@ -10,27 +10,15 @@
                 </div>
 
                 <div class="panel-body">
-                    <div class="col-md-4">
-                        <ul class="list-group">
-                            @foreach ($subcategories_col_1 as $subcategory)
-                                @include('category.include.subcategory_column')
-                            @endforeach
-                        </ul>
-                    </div>
-                    <div class="col-md-4">
-                        <ul class="list-group">
-                            @foreach ($subcategories_col_2 as $subcategory)
-                                @include('category.include.subcategory_column')
-                            @endforeach
-                        </ul>
-                    </div>
-                    <div class="col-md-4">
-                        <ul class="list-group">
-                            @foreach ($subcategories_col_3 as $subcategory)
-                                @include('category.include.subcategory_column')
-                            @endforeach
-                        </ul>
-                    </div>
+                    @foreach ($subcategories->split(3) as $subcategory_column)
+                        <div class="col-md-4">
+                            <ul class="list-group">
+                                @foreach ($subcategory_column as $subcategory)
+                                    @include('category.include.subcategory_column')
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endforeach
                 </div>
             </div>
 
@@ -38,6 +26,9 @@
                 <div class="panel-heading">
                     <a href="{{ url('/') }}"><span class="glyphicon glyphicon-home"></span> Strona główna</a> -> <a href="{{ url('/category/' . $category->id) }}">{{ $category->name }}</a>
                 </div>
+
+
+
                 <div class="panel-body">
                     @if (empty($websites))
                         <div class="text-center">

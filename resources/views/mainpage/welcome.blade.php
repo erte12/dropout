@@ -20,27 +20,15 @@
                         </div>
                     @endif
 
-                    <div class="col-md-4">
-                        <ul class="list-group">
-                        @foreach ($categories_col_1 as $category)
-                            @include('mainpage.include.category_column')
-                        @endforeach
-                        </ul>
-                    </div>
-                    <div class="col-md-4">
-                        <ul class="list-group">
-                        @foreach ($categories_col_2 as $category)
-                            @include('mainpage.include.category_column')
-                        @endforeach
-                        </ul>
-                    </div>
-                    <div class="col-md-4">
-                        <ul class="list-group">
-                        @foreach ($categories_col_3 as $category)
-                            @include('mainpage.include.category_column')
-                        @endforeach
-                        </ul>
-                    </div>
+                    @foreach ($categories->split(3) as $category_column)
+                        <div class="col-md-4">
+                            <ul class="list-group">
+                                @foreach ($category_column as $category)
+                                    @include('mainpage.include.category_column')
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endforeach
                 </div>
             </div>
 
