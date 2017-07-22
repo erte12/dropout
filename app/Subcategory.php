@@ -27,6 +27,6 @@ class Subcategory extends Model
 
     function websites()
     {
-        return $this->hasMany('App\Website')->orderBy('created_at', 'desc');
+        return $this->hasMany('App\Website')->orderBy('created_at', 'desc')->where('active', '=', 1);
     }
 }

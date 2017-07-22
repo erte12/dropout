@@ -28,6 +28,6 @@ class Category extends Model
 
     function websites()
     {
-        return $this->hasManyThrough('App\Website', 'App\Subcategory');
+        return $this->hasManyThrough('App\Website', 'App\Subcategory')->where('active', '=', 1);
     }
 }

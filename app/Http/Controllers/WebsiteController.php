@@ -64,7 +64,14 @@ class WebsiteController extends Controller
      */
     public function show($id)
     {
-        $website = Website::findOrFail($id);
+        $website = Website::where('active', '=', 1)
+        ->where('id', '=', $id)
+        ->first();
+
+        if(is_null($website)) {
+            abort(404, 'Taka strona nie istnieje');
+        }
+
         return view('website.show', compact('website'));
     }
 

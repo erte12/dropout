@@ -20,7 +20,7 @@ class HomeController extends Controller
         ->with('websites')
         ->get();
 
-        $websites = Website::latest()->limit(5)->get();
+        $websites = Website::latest()->where('active', '=', 1)->limit(5)->get();
 
         return view('mainpage.welcome', compact('categories', 'websites'));
     }

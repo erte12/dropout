@@ -18,3 +18,4 @@ Route::get('/panel', 'PanelController@index')->name('panel');
 Route::resource('/website', 'WebsiteController', ['except' => 'index']);
 Route::resource('/category', 'CategoryController', ['except' => 'index']);
 Route::resource('/subcategory', 'SubcategoryController', ['except' => 'index']);
+Route::get('/search', 'SearchController@websites')->name('search');

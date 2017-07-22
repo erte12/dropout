@@ -82,6 +82,7 @@ class DatabaseSeeder extends Seeder
                             'subcategory_id' => $subcategory_id_for_website_to_database,
                             'url' => substr($url, 0, $last_index),
                             'description' => $faker->paragraph($nbSentences = 3, $variableNbSentences = true),
+                            'active' => $faker->numberBetween(0,1),
                         ]);
                     } catch(PDOException $expection) {
                         continue;

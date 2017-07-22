@@ -30,11 +30,7 @@
 
 
                 <div class="panel-body">
-                    @if (empty($websites))
-                        <div class="text-center">
-                            <h4><strong>Ta kategoria jest pusta</strong></h4>
-                        </div>
-                    @else
+                    @if ($websites->isNotEmpty())
                         <div class="text-center">
                             {{ $websites }}
                         </div>
@@ -43,6 +39,10 @@
                         @endforeach
                         <div class="text-center">
                             {{ $websites }}
+                        </div>
+                    @else
+                        <div class="text-center">
+                            <h4><strong>Ta kategoria jest pusta</strong></h4>
                         </div>
                     @endif
                 </div>

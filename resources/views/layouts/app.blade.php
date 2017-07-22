@@ -32,7 +32,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                        DropOut
                     </a>
                 </div>
 
@@ -41,6 +41,12 @@
                     <ul class="nav navbar-nav">
                         &nbsp;
                     </ul>
+                    <form action="{{ route('search') }}" method="GET" class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Fraza wyszukiwania" name="q">
+                        </div>
+                        <button type="submit" class="btn btn-default">Szukaj</button>
+                    </form>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
