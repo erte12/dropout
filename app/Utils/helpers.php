@@ -1,14 +1,10 @@
 <?php
 
-use App\Category;
-use App\Subcategory;
-
 /**
- * Returns how many websites contains given category
- * @return int
+ * Returns true if authenticated is admin, false otherwise.
+ * @return bool
  */
-function websites_number_in_category($category_id)
+function superuser()
 {
-    $websites = Category::findOrFail($category_id)->websites;
-    return $websites->count();
+    return auth()->user()->role_id === 1;
 }

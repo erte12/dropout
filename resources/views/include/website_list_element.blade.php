@@ -6,7 +6,7 @@
         @endphp
         <a href="{{ url('website/' . $website->id) }}" class="website">
             <span class="glyphicon glyphicon-hand-right"></span>
-            {{ $website->name }} - {{ $website_url }}
+            <strong>{{ $website->name }}</strong> - {{ $website_url }}
         </a>
     </div>
     <div class="panel-body text-justify">

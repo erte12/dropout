@@ -1,10 +1,10 @@
-<a href="{{ url('category/' . $category->id ) }}" class="list-group-item">
+<a href="{{ url('category/' . $category->id ) }}" class="list-group-item" style="height: 70px;">
     <span class="badge">{{ $category->websites->count() }}</span>
     <h5 class="list-group-item-heading">
         <span class="glyphicon glyphicon-folder-open"></span>
-        {{ $category->name }}
+        <strong>{{ $category->name }}</strong>
     </h5>
-    <p class="list-group-item-text">
+    <p class="list-group-item-text small">
         @foreach ($category->subcategories->take(6) as $subcategory)
             @if(! $loop->last)
                 {{ $subcategory->name }},

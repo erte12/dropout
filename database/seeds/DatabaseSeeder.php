@@ -24,6 +24,19 @@ class DatabaseSeeder extends Seeder
         $faker = Faker::create('pl_PL');
 
         /**
+         * Roles seeds
+         */
+         DB::table('roles')->insert([
+             'id' => 1,
+             'name' => 'admin',
+         ]);
+
+         DB::table('roles')->insert([
+             'id' => 2,
+             'name' => 'user',
+         ]);
+
+        /**
          * Users seeds
          */
         for($user_id = 1; $user_id <= self::NUMBER_OF_USERS; $user_id++)
@@ -33,6 +46,7 @@ class DatabaseSeeder extends Seeder
                      'name' => 'Bartek Iskrzycki',
                      'email' => 'bartek.iskrzycki@gmail.com',
                      'password' => bcrypt('pass'),
+                     'role_id' => 1,
                  ]);
              } else {
                  DB::table('users')->insert([

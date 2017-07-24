@@ -32,6 +32,15 @@ a.website, a:hover.website{
     margin-right: 5px;
 }
 
+.panel.panel-primary {
+    border-color: #80b3ff;
+}
+
+.panel-primary>.panel-heading {
+    background-color: #80b3ff;
+    border-color: #80b3ff;
+}
+
 @media (min-width: 760px) {
     .website img {
         margin-right: 10px;
