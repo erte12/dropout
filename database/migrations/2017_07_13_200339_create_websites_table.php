@@ -21,7 +21,7 @@ class CreateWebsitesTable extends Migration
             $table->string('url')->unique();
             $table->longText('description');
             $table->integer('subcategory_id')->unsigned();
-            // $table->foreign('subcategory_id')->references('id')->on('subcategories')->onDelete('cascade');
+            $table->foreign('subcategory_id')->references('id')->on('subcategories')->onDelete('cascade');
             $table->integer('subcategory_extra_id')->unsigned()->nullable();
             //$table->foreign('subcategory_extra_id')->references('id')->on('subcategories')->onDelete('cascade');
             $table->boolean('active')->default(0);
