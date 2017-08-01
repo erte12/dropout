@@ -40,8 +40,12 @@ class WebsiteController extends Controller
             'name' => 'required|min:5|max:150',
             'url' => 'required|url|active_url|unique:websites,url|max:100',
             'description' => 'required|min:100|max:1500',
-            'subcategory_id' => 'required|integer',
+            'subcategory_id' => 'required|exists:subcategories,id',
+            'subcategory_extra_id' => 'required|different:subcategory_id|integer',
+            'tags' => 'required',
         ]);
+
+        $tags = array_map('trim', explode(',', $request->tags));
 
         $website = new Website;
         $website->user_id = auth()->user()->id;
@@ -49,9 +53,8 @@ class WebsiteController extends Controller
         $website->url = $request->url;
         $website->description = $request->description;
         $website->subcategory_id = $request->subcategory_id;
+        $website->subcategory_extra_id = $request->subcategory_extra_id;
         $website->save();
-
-        $success = true;
 
         return redirect()->route('home')->with('status', 'Twoja strona została pomyślnie wysłana i pojawi się w katalogu po sprawdzeniu jej przez administratora.');
     }
