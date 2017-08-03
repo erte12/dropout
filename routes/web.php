@@ -15,6 +15,7 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/panel', 'PanelController@index')->name('panel');
+Route::get('/panel/websites', 'PanelController@user_websites')->name('panel.user.websites');
 Route::resource('/website', 'WebsiteController', ['except' => 'index']);
 Route::resource('/category', 'CategoryController', ['except' => 'index']);
 Route::resource('/subcategory', 'SubcategoryController', ['except' => 'index']);

@@ -47,6 +47,16 @@
                             Dodano:
                             <a href="{{ url('/subcategory/' . $website->created_at) }}">{{ $website->created_at }}</a>
                         </li>
+                        <li class="list-group-item">
+                            <span class="glyphicon glyphicon-list"></span>
+                            Tagi:
+                            @foreach ($website->tags as $tag)
+                                <a href="{{ url('/tags/' . $tag->id) }}">{{ $tag->name }}</a>
+                                @if (! $loop->last)
+                                    ,
+                                @endif
+                            @endforeach
+                        </li>
                     </ul>
 
                 </div>

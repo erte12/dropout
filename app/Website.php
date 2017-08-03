@@ -12,13 +12,25 @@ class Website extends Model
     use SoftDeletes;
     // use Searchable;
 
-
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id',
+        'name',
+        'url',
+        'description',
+        'subcategory_id',
+    ];
 
     function subcategory()
     {
@@ -33,5 +45,10 @@ class Website extends Model
     function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    function tags()
+    {
+        return $this->belongsToMany('App\Tag');
     }
 }

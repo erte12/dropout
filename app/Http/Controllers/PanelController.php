@@ -25,4 +25,14 @@ class PanelController extends Controller
     {
         return view('panel.welcome');
     }
+
+    /**
+     * Show the user's websites (active, inactive and in edit)
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function user_websites()
+    {
+        return view('panel.user.websites');
+    }
 }

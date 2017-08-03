@@ -15,15 +15,11 @@ class CreateTagWebsiteTable extends Migration
     {
         Schema::create('tag_website', function (Blueprint $table) {
             $table->increments('id');
-
-
             $table->integer('tag_id')->unsigned()->nullable();
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
-
             $table->integer('website_id')->unsigned()->nullable();
             $table->foreign('website_id')->references('id')->on('websites')->onDelete('cascade');
-
-            $table->timestamps();
+            $table->tinyInteger('active')->default(0);
         });
     }
 

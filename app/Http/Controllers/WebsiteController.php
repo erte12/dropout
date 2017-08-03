@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Category;
 use App\Website;
+use App\Tag;
+use DB;
 
 class WebsiteController extends Controller
 {
@@ -24,7 +26,7 @@ class WebsiteController extends Controller
      */
     public function create()
     {
-        $categories = Category::orderBy('name')->get();
+        $categories = Category::orderBy('name')->with('subcategories')->get();
         return view('website.create', compact('categories'));
     }
 
@@ -42,19 +44,29 @@ class WebsiteController extends Controller
             'description' => 'required|min:100|max:1500',
             'subcategory_id' => 'required|exists:subcategories,id',
             'subcategory_extra_id' => 'required|different:subcategory_id|integer',
-            'tags' => 'required',
+            'tags' => 'required'|'min:5',
+        ]);
+
+        $website = auth()->user()->websites()->create([
+            'name' => $request->name,
+            'url' => $request->url,
+            'description' => $request->description,
+            'subcategory_id' => $request->subcategory_id,
         ]);
 
         $tags = array_map('trim', explode(',', $request->tags));
 
-        $website = new Website;
-        $website->user_id = auth()->user()->id;
-        $website->name = $request->name;
-        $website->url = $request->url;
-        $website->description = $request->description;
-        $website->subcategory_id = $request->subcategory_id;
-        $website->subcategory_extra_id = $request->subcategory_extra_id;
-        $website->save();
+        foreach ($tags as $tag_name) {
+            $tag = Tag::where(['name' => $tag_name])->first();
+
+            if(is_null($tag)) {
+                $website->tags()->create([
+                    'name' => $tag_name,
+                ]);
+            } else {
+                $website->tags()->attach($tag->id);
+            }
+        }
 
         return redirect()->route('home')->with('status', 'Twoja strona została pomyślnie wysłana i pojawi się w katalogu po sprawdzeniu jej przez administratora.');
     }
@@ -69,6 +81,7 @@ class WebsiteController extends Controller
     {
         $website = Website::where('active', '=', 1)
         ->where('id', '=', $id)
+        ->with('tags')
         ->first();
 
         if(is_null($website)) {
@@ -86,7 +99,10 @@ class WebsiteController extends Controller
      */
     public function edit($id)
     {
-        //
+        $website = Website::findOrFail($id);
+
+        $categories = Category::orderBy('name')->with('subcategories')->get();
+        return view('website.edit', compact('website', 'categories'));
     }
 
     /**

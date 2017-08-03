@@ -17,6 +17,33 @@
                     </div>
 
                     <ul class="list-group" style="">
+                        <a class="list-group-item"href="{{ url('panel/websites') }}">
+                            <span class="glyphicon glyphicon-check"></span>
+                            Twoje strony
+                            <div class="pull-right">
+                                <span class="label label-success">Zaakceptowane: {{ auth()->user()->websites->where('active', 1)->count() }}</span>
+                                <span class="label label-info">Oczekujące: {{ auth()->user()->websites->where('active', 0)->count() }}</span>
+                                <span class="label label-warning">W edycji: {{ auth()->user()->websites->where('in_edit', 1)->count() }}</span>
+                                <span class="label label-danger">Usunięte: </span>
+                            </div>
+                        </a>
+                        <a class="list-group-item" href="{{ url('website/create') }}">
+                            <span class="glyphicon glyphicon-link"></span>
+                            Dodaj stronę
+                        </a>
+                        <a class="list-group-item" href="{{ url('rules') }}">
+                            <span class="glyphicon glyphicon-list-alt"></span>
+                            Regulamin
+                        </a>
+                        <a class="list-group-item" href="{{ url('user/' . auth()->id() . '/edit') }}">
+                            <span class="glyphicon glyphicon-wrench"></span>
+                            Edytuj dane użytkownika
+                        </a>
+                        <a class="list-group-item" href="{{ url('') }}">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            Usuń konto
+                        </a>
+
                         @if( superuser() )
                             <a class="list-group-item list-group-item-info" href="{{ url('website/create') }}">
                                 <span class="glyphicon glyphicon-zoom-in"></span>
@@ -48,33 +75,6 @@
                                 </div>
                             </a>
                         @endif
-
-                        <a class="list-group-item"href="{{ url('panel/websites') }}">
-                            <span class="glyphicon glyphicon-check"></span>
-                            Twoje strony
-                            <div class="pull-right">
-                                <span class="label label-success">Zaakceptowane: {{ auth()->user()->websites->where('active', 1)->count() }}</span>
-                                <span class="label label-info">Oczekujące: {{ auth()->user()->websites->where('active', 0)->count() }}</span>
-                                <span class="label label-warning">W edycji: {{ auth()->user()->websites->where('in_edit', 1)->count() }}</span>
-                                <span class="label label-danger">Usunięte: </span>
-                            </div>
-                        </a>
-                        <a class="list-group-item" href="{{ url('website/create') }}">
-                            <span class="glyphicon glyphicon-link"></span>
-                            Dodaj stronę
-                        </a>
-                        <a class="list-group-item" href="{{ url('rules') }}">
-                            <span class="glyphicon glyphicon-list-alt"></span>
-                            Regulamin
-                        </a>
-                        <a class="list-group-item" href="{{ url('user/' . auth()->id() . '/edit') }}">
-                            <span class="glyphicon glyphicon-wrench"></span>
-                            Edytuj dane użytkownika
-                        </a>
-                        <a class="list-group-item" href="{{ url('') }}">
-                            <span class="glyphicon glyphicon-trash"></span>
-                            Usuń konto
-                        </a>
                     </ul>
                 </div>
             </div>

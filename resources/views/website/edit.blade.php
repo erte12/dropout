@@ -5,17 +5,18 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Dodaj nową stronę</div>
+                <div class="panel-heading">Edytuj stronę</div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ url('website') }}">
+                    <form class="form-horizontal" method="POST" action="{{ url('website/' . $website->id) }}">
                         {{ csrf_field() }}
+                        {{ method_field('PATCH') }}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Nazwa strony</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+                                <input id="name" type="text" class="form-control" name="name" value="{{ $errors->any() ? old('name') : $website->name }}" required autofocus>
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -29,7 +30,7 @@
                             <label for="url" class="col-md-4 control-label">Adres strony</label>
 
                             <div class="col-md-6">
-                                <input id="url" type="url" class="form-control" name="url" value="{{ $errors->any() ? old('url') : 'http://' }}" required>
+                                <input id="url" type="url" class="form-control" name="url" value="{{ $errors->any() ? old('url') : $website->url }}" required>
                                 @if ($errors->has('url'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('url') }}</strong>
@@ -42,7 +43,7 @@
                             <label for="description" class="col-md-4 control-label">Opis</label>
 
                             <div class="col-md-6">
-                                <textarea id="description" type="description" class="form-control" name="description" rows="8" required>{{ old('description') }}</textarea>
+                                <textarea id="description" type="description" class="form-control" name="description" rows="8" required>{{ $website->description }}</textarea>
                                 @if ($errors->has('description'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('description') }}</strong>
@@ -55,7 +56,7 @@
                             <label for="tags" class="col-md-4 control-label">Tagi</label>
 
                             <div class="col-md-6">
-                                <input id="tags" type="text" class="form-control" name="tags" value="{{ old('tags') }}" required>
+                                <input id="tags" type="text" class="form-control" name="tags" value="{{ $website->tags->implode('name', ', ') }}" required>
 
                                 @if ($errors->has('tags'))
                                     <span class="help-block">
@@ -72,7 +73,7 @@
                                 <select id="subcategory_id" class="form-control" name="subcategory_id">
                                     @foreach ($categories as $category):
                                         @foreach ($category->subcategories as $subcategory):
-                                            <option value="{{ $subcategory->id }}">{{ $category->name }} -> {{ $subcategory->name }}</option>
+                                            <option value="{{ $subcategory->id }}" {{ ($subcategory->id == $website->subcategory_id) ? 'selected' : '' }}>{{ $category->name }} -> {{ $subcategory->name }}</option>
                                         @endforeach
                                     @endforeach
                                 </select>
