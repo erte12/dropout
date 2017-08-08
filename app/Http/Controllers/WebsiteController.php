@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use App\Category;
 use App\Website;
 use App\Tag;
-use DB;
+use App\WebsiteEdited;
+
 
 class WebsiteController extends Controller
 {
-
     /**
      * Construct with middleware
      */
@@ -43,8 +43,7 @@ class WebsiteController extends Controller
             'url' => 'required|url|active_url|unique:websites,url|max:100',
             'description' => 'required|min:100|max:1500',
             'subcategory_id' => 'required|exists:subcategories,id',
-            'subcategory_extra_id' => 'required|different:subcategory_id|integer',
-            'tags' => 'required'|'min:5',
+            'tags' => 'required|min:5',
         ]);
 
         $website = auth()->user()->websites()->create([
@@ -68,7 +67,8 @@ class WebsiteController extends Controller
             }
         }
 
-        return redirect()->route('home')->with('status', 'Twoja strona została pomyślnie wysłana i pojawi się w katalogu po sprawdzeniu jej przez administratora.');
+        return redirect()->route('home')
+        ->with('status', 'Twoja strona została pomyślnie wysłana i pojawi się w katalogu po sprawdzeniu jej przez administratora.');
     }
 
     /**
@@ -100,7 +100,6 @@ class WebsiteController extends Controller
     public function edit($id)
     {
         $website = Website::findOrFail($id);
-
         $categories = Category::orderBy('name')->with('subcategories')->get();
         return view('website.edit', compact('website', 'categories'));
     }
@@ -114,17 +113,68 @@ class WebsiteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|min:5|max:150',
+            'description' => 'required|min:100|max:1500',
+            'subcategory_id' => 'required|exists:subcategories,id',
+        ]);
+
+        // Only superuser is able to modify 'active' column
+        if(superuser()) {
+            $website = Website::findOrFail($id)->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                'subcategory_id' => $request->subcategory_id,
+                'active' => $request->accept,
+            ]);
+        } else {
+            $website = Website::findOrFail($id);
+            $website_edited = WebsiteEdited::updateOrCreate([
+                'url' => $website->url,
+            ], [
+                'website_id' => $website->id,
+                'user_id' => $website->user_id,
+                'name' => $request->name,
+                'description' => $request->description,
+                'subcategory_id' => $request->subcategory_id,
+            ]);
+        }
+
+        if(superuser()) {
+            return redirect()->route('panel');
+        }
+
+        return redirect()->route('panel.user.websites');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from storage (softdeleting)
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $website = Website::findOrFail($id)->delete();
+
+        if(superuser()) {
+            return redirect()->route('panel');
+        }
+        return redirect()->route('panel.user.websites');
+    }
+
+    /**
+     * Remove the specified resource from storage (hardeleting).
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy_forever($id)
+    {
+        $website = Website::withTrashed()->findOrFail($id)->forceDelete();
+        if(superuser()) {
+            return redirect()->route('panel.admin.websites.waiting');
+        }
+        return redirect()->route('panel.user.websites');
     }
 }

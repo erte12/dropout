@@ -30,6 +30,8 @@ class Website extends Model
         'url',
         'description',
         'subcategory_id',
+        'edit',
+        'active'
     ];
 
     function subcategory()
@@ -42,6 +44,9 @@ class Website extends Model
         return $this->belongsTo('App\Category');
     }
 
+    /**
+    * Get the user that owns the website.
+    */
     function user()
     {
         return $this->belongsTo('App\User');
@@ -50,5 +55,13 @@ class Website extends Model
     function tags()
     {
         return $this->belongsToMany('App\Tag');
+    }
+
+    /**
+    * Get the website in edit queue.
+    */
+    function website()
+    {
+        return $this->hasOne('App\EditedWebsite');
     }
 }

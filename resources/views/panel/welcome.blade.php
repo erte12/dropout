@@ -10,10 +10,9 @@
                 <div class="panel-body">
 
                     <div class="panel panel-primary">
-                        <div class="panel-heading">Powiadomienia</div>
-                            <div class="panel-body">
-                                Brak powiadomień
-                            </div>
+                        <div class="panel-body">
+                            Brak powiadomień
+                        </div>
                     </div>
 
                     <ul class="list-group" style="">
@@ -23,8 +22,8 @@
                             <div class="pull-right">
                                 <span class="label label-success">Zaakceptowane: {{ auth()->user()->websites->where('active', 1)->count() }}</span>
                                 <span class="label label-info">Oczekujące: {{ auth()->user()->websites->where('active', 0)->count() }}</span>
-                                <span class="label label-warning">W edycji: {{ auth()->user()->websites->where('in_edit', 1)->count() }}</span>
-                                <span class="label label-danger">Usunięte: </span>
+                                <span class="label label-warning">W edycji: {{ auth()->user()->websites_edited()->count() }}</span>
+                                <span class="label label-danger">Usunięte: {{ auth()->user()->websites()->onlyTrashed()->count() }}</span>
                             </div>
                         </a>
                         <a class="list-group-item" href="{{ url('website/create') }}">
@@ -45,29 +44,35 @@
                         </a>
 
                         @if( superuser() )
-                            <a class="list-group-item list-group-item-info" href="{{ url('website/create') }}">
+                            <a class="list-group-item" href="{{ url('/panel/admin/websites/waiting') }}">
                                 <span class="glyphicon glyphicon-zoom-in"></span>
                                 Strony w poczekalni
                                 <div class="pull-right">
                                     <span class="label label-info">Oczekujące:</span>
+                                </div>
+                            </a>
+                            <a class="list-group-item" href="{{ url('/panel/admin/websites/edited') }}">
+                                <span class="glyphicon glyphicon-cog"></span>
+                                Prośby o edycję
+                                <div class="pull-right">
                                     <span class="label label-warning">W edycji:</span>
                                 </div>
                             </a>
-                            <a class="list-group-item list-group-item-success" href="{{ url('website/create') }}">
+                            <a class="list-group-item" href="{{ url('/panel/admin/websites/accepted') }}">
                                 <span class="glyphicon glyphicon-ok"></span>
                                 Strony zaakceptowane
                                 <div class="pull-right">
                                     <span class="label label-success">Liczba: </span>
                                 </div>
                             </a>
-                            <a class="list-group-item list-group-item-danger" href="{{ url('website/create') }}">
+                            <a class="list-group-item" href="{{ url('/panel/admin/websites/deleted') }}">
                                 <span class="glyphicon glyphicon-remove"></span>
                                 Strony usunięte
                                 <div class="pull-right">
                                     <span class="label label-danger">Liczba: </span>
                                 </div>
                             </a>
-                            <a class="list-group-item list-group-item-warning" href="{{ url('website/create') }}">
+                            <a class="list-group-item" href="{{ url('panel/admin/users') }}">
                                 <span class="glyphicon glyphicon-user"></span>
                                 Użytkownicy
                                 <div class="pull-right">

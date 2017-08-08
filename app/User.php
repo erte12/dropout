@@ -27,8 +27,19 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+    * Get all websites that belongs to user.
+    */
     function websites()
     {
         return $this->hasMany('App\Website');
+    }
+
+    /**
+    * Get the websites form edit queue.
+    */
+    function websites_edited()
+    {
+        return $this->hasMany('App\WebsiteEdited');
     }
 }

@@ -8,7 +8,7 @@
                 <div class="panel-heading">Dodaj nową stronę</div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ url('website') }}">
+                    <form id="form" class="form-horizontal" method="POST" action="{{ url('website') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">

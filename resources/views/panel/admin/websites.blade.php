@@ -5,32 +5,13 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Twoje strony</div>
+                <div class="panel-heading"><a href="{{ url('panel/') }}" style="color: rgb(51, 51, 51);">Panel użytkownika</a> - Strony</div>
                 <div class="panel-body">
                     <ul class="list-group">
-
-                        @foreach (auth()->user()->websites()->where('active', 1)->get() as $website)
-                            <a class="list-group-item list-group-item-success" href="{{ url('website/' . $website->id) . '/edit' }}">
+                        @foreach ($websites as $website)
+                            <a class="list-group-item list-group-item" href="{{ url('website/' . $website->id) . '/edit' }}">
                                 {{ $website->name }} - {{ $website->url }}
-                                <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right deleteSymbol"></span>
-                            </a>
-                        @endforeach
-                        @foreach (auth()->user()->websites()->where('active', 0)->get() as $website)
-                            <a class="list-group-item list-group-item-info" href="{{ url('website/' . $website->id . '/edit') }}">
-                                {{ $website->name }} - {{ $website->url }}
-                                <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right deleteSymbolFinal"></span>
-                            </a>
-                        @endforeach
-                        @foreach (auth()->user()->websites_edited()->get() as $website)
-                            <a class="list-group-item list-group-item-warning" href="{{ url('website/edited/' . $website->id . '/edit') }}">
-                                {{ $website->name }} - {{ $website->url }}
-                                <!-- <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right deleteSymbolFinal"></span> -->
-                            </a>
-                        @endforeach
-                        @foreach (auth()->user()->websites()->onlyTrashed()->get() as $website)
-                            <a class="list-group-item list-group-item-danger" href="{{ url('website/' . $website->id . '/edit') }}">
-                                {{ $website->name }} - {{ $website->url }}
-                                <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right deleteSymbolFinal"></span>
+                                <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right{{($website->active === 0 || !is_null($website->deleted_at)) ? ' deleteSymbolFinal' : ' deleteSymbol' }}"></span>
                             </a>
                         @endforeach
                     </ul>

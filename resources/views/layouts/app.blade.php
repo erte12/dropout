@@ -83,6 +83,13 @@
     </div>
 
     <!-- Scripts -->
+    <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+
+    <!-- Live reload -->
+    <script src="http://localhost:35729/livereload.js"></script>
+
+    <!-- Custom scripts -->
+    @yield('footer')
 </body>
 </html>

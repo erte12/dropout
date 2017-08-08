@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+@extends('layouts.app') @section('content')
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
@@ -8,34 +6,29 @@
                 <div class="panel-heading">Edytuj stronę</div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ url('website/' . $website->id) }}">
+                    <form id="form" class="form-horizontal" method="POST" action="{{ url('website/' . $website->id) }}">
                         {{ csrf_field() }}
-                        {{ method_field('PATCH') }}
+                        <input id="requestType" type="hidden" name="_method" value="PATCH">
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Nazwa strony</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ $errors->any() ? old('name') : $website->name }}" required autofocus>
-
-                                @if ($errors->has('name'))
-                                    <span class="help-block">
+                                <input id="name" type="text" class="form-control" name="name" value="{{ $errors->any() ? old('name') : $website->name }}" required autofocus> @if ($errors->has('name'))
+                                <span class="help-block">
                                         <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
+                                    </span> @endif
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('url') ? ' has-error' : '' }}">
+                        <div class="form-group">
                             <label for="url" class="col-md-4 control-label">Adres strony</label>
 
                             <div class="col-md-6">
-                                <input id="url" type="url" class="form-control" name="url" value="{{ $errors->any() ? old('url') : $website->url }}" required>
-                                @if ($errors->has('url'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('url') }}</strong>
-                                    </span>
-                                @endif
+                                <input type="text" class="form-control" value="{{ $website->url }}" disabled>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="{{ $website->url }}" class="btn btn-primary" role="button">Odwiedź</a>
                             </div>
                         </div>
 
@@ -43,16 +36,14 @@
                             <label for="description" class="col-md-4 control-label">Opis</label>
 
                             <div class="col-md-6">
-                                <textarea id="description" type="description" class="form-control" name="description" rows="8" required>{{ $website->description }}</textarea>
-                                @if ($errors->has('description'))
-                                    <span class="help-block">
+                                <textarea id="description" type="description" class="form-control" name="description" rows="8" required>{{ $website->description }}</textarea> @if ($errors->has('description'))
+                                <span class="help-block">
                                         <strong>{{ $errors->first('description') }}</strong>
-                                    </span>
-                                @endif
+                                    </span> @endif
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('tags') ? ' has-error' : '' }}">
+                        <!-- <div class="form-group{{ $errors->has('tags') ? ' has-error' : '' }}">
                             <label for="tags" class="col-md-4 control-label">Tagi</label>
 
                             <div class="col-md-6">
@@ -64,7 +55,7 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-group{{ $errors->has('subcategory_id') ? ' has-error' : '' }}">
                             <label for="subcategory_id" class="col-md-4 control-label">Kategoria 1</label>
@@ -72,24 +63,80 @@
                             <div class="col-md-6">
                                 <select id="subcategory_id" class="form-control" name="subcategory_id">
                                     @foreach ($categories as $category):
-                                        @foreach ($category->subcategories as $subcategory):
-                                            <option value="{{ $subcategory->id }}" {{ ($subcategory->id == $website->subcategory_id) ? 'selected' : '' }}>{{ $category->name }} -> {{ $subcategory->name }}</option>
-                                        @endforeach
+                                    @foreach ($category->subcategories as $subcategory):
+                                    <option value="{{ $subcategory->id }}" {{ ($subcategory->id == $website->subcategory_id) ? 'selected' : '' }}>{{ $category->name }} -> {{ $subcategory->name }}</option>
                                     @endforeach
-                                </select>
-                                @if ($errors->has('subcategory_id'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('subcategory_id') }}</strong>
-                                    </span>
-                                @endif
+                                    @endforeach
+                                </select> @if ($errors->has('subcategory_id'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('subcategory_id') }}</strong>
+                                </span> @endif
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Wyślij
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal">
+                                    Zapisz zmiany
                                 </button>
+                                @if (superuser())
+                                <input type="hidden" id="accept" name="accept" value="{{ $website->active }}" />
+                                @if ($website->active === 0)
+                                <button id="acceptButton" type="button" class="btn btn-success">
+                                    Zaakceptuj
+                                </button>
+                                @endif
+                                @endif
+
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+                                    Usuń
+                                </button>
+
+                                <!-- Modals -->
+                                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal">
+                                    <div class="modal-dialog modal-md" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title">Usuwanie strony z katalogu</h4>
+                                            </div>
+                                            <div class="modal-body text-justify">
+                                                Czy na pewno chcesz usunąć stronę:
+                                                <strong>"{{ $website->name }}"?</strong>
+                                                @if($website->active === 0)
+                                                Nie będzie możliwe jej przywrócenie.
+                                                @else
+                                                Strona przestanie być widoczna w katalogu jednak w każdej chwili będziesz mógł ją przywrócić.
+                                                @endif
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                                                <button id="deleteButton" type="button" class="btn btn-danger">Potwierdź</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModal">
+                                    <div class="modal-dialog modal-md" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title">Edycja danych strony</h4>
+                                            </div>
+                                            <div class="modal-body text-justify">
+                                                Czy na pewno chcesz zapisać dane strony:
+                                                <strong>"{{ $website->name }}"?</strong> Wszelkie zmiany podlegają weryfikacji moderatora. Twoja strona będzie nadal widoczna w katalogu ze starymi danymi. O decyzji administratora zostaniesz
+                                                poinformowany.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                                                <button type="submit" class="btn btn-primary">Potwierdź</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -98,4 +145,25 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('footer')
+@if (superuser())
+<script>
+    $('#acceptButton').click(function() {
+        $('#accept').attr('value', 1);
+        $('#form').submit();
+    });
+</script>
+@endif
+
+<script>
+    $('#deleteButton').click(function() {
+        $('#requestType').attr("value", "DELETE");
+        @if($website->active === 0)
+        $('#form').attr('action', '{{ url("website/force/" . $website->id) }}');
+        @endif
+        $('#form').submit();
+    });
+</script>
 @endsection

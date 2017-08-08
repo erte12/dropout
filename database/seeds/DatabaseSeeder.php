@@ -10,9 +10,9 @@ class DatabaseSeeder extends Seeder
      * @var integer
      */
     const NUMBER_OF_CATEGORIES = 30;
-    const NUMBER_OF_SUBCATEGORIES = 20;
-    const NUMBER_OF_USERS = 10;
-    const MAX_NUMBER_OF_WEBSITES_PER_SUBCATEGORY = 30;
+    const NUMBER_OF_SUBCATEGORIES = 10;
+    const NUMBER_OF_USERS = 20;
+    const MAX_NUMBER_OF_WEBSITES_PER_SUBCATEGORY = 5;
 
     /**
      * Run the database seeds.
@@ -41,18 +41,25 @@ class DatabaseSeeder extends Seeder
          */
         for($user_id = 1; $user_id <= self::NUMBER_OF_USERS; $user_id++)
         {
-             if($user_id === 1) {
-                 DB::table('users')->insert([
-                     'name' => 'Bartek Iskrzycki',
-                     'email' => 'bartek.iskrzycki@gmail.com',
-                     'password' => bcrypt('pass'),
-                     'role_id' => 1,
-                 ]);
-             } else {
-                 DB::table('users')->insert([
-                     'name' => $faker->firstNameMale . ' ' . $faker->lastName,
-                     'email' => $faker->safeEmail,
-                     'password' => bcrypt('pass'),
+            if($user_id === 1) {
+                DB::table('users')->insert([
+                    'name' => 'Admin',
+                    'email' => 'bartek.iskrzycki@gmail.com',
+                    'password' => bcrypt('pass'),
+                    'role_id' => 1,
+                ]);
+            } else if($user_id === 2) {
+                DB::table('users')->insert([
+                    'name' => 'User',
+                    'email' => 'user@example.org',
+                    'password' => bcrypt('pass'),
+                    'role_id' => 2,
+                ]);
+            } else {
+                DB::table('users')->insert([
+                    'name' => $faker->firstNameMale . ' ' . $faker->lastName,
+                    'email' => $faker->safeEmail,
+                    'password' => bcrypt('pass'),
                 ]);
             }
         }
