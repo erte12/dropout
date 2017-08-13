@@ -3,14 +3,16 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Dodaj nową stronę</div>
+                <div class="panel-heading">
+                <a href="{{ url('panel') }}">Panel użytkownika</a> -> <a href="{{ url('website/create') }}">Dodaj stronę</a></div>
 
                 <div class="panel-body">
                     <form id="form" class="form-horizontal" method="POST" action="{{ url('website') }}">
                         {{ csrf_field() }}
 
+                        <!-- Name -->
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Nazwa strony</label>
 
@@ -25,6 +27,7 @@
                             </div>
                         </div>
 
+                        <!-- URL -->
                         <div class="form-group{{ $errors->has('url') ? ' has-error' : '' }}">
                             <label for="url" class="col-md-4 control-label">Adres strony</label>
 
@@ -38,6 +41,7 @@
                             </div>
                         </div>
 
+                        <!-- Description -->
                         <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                             <label for="description" class="col-md-4 control-label">Opis</label>
 
@@ -51,12 +55,21 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('tags') ? ' has-error' : '' }}">
-                            <label for="tags" class="col-md-4 control-label">Tagi</label>
+                        <!-- Tags -->
+                        <div class="form-group">
+                            <label for="tagsInput" class="col-md-4 control-label">Tagi</label>
 
                             <div class="col-md-6">
-                                <input id="tags" type="text" class="form-control" name="tags" value="{{ old('tags') }}" required>
+                                <input id="tagsInput" type="text" class="form-control" value="{{ old('tags') }}">
 
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('tags') ? ' has-error' : '' }}">
+                            <div class="col-md-6 col-md-offset-4">
+                                <div class="form-control-list">
+                                    <ul id="tagsList" class="list-inline"></ul>
+                                </div>
                                 @if ($errors->has('tags'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('tags') }}</strong>
@@ -65,6 +78,8 @@
                             </div>
                         </div>
 
+
+                        <!-- Categories -->
                         <div class="form-group{{ $errors->has('subcategory_id') ? ' has-error' : '' }}">
                             <label for="subcategory_id" class="col-md-4 control-label">Kategoria 1</label>
 
@@ -97,4 +112,8 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('footer')
+<script src="{{ asset('js/newwebsite.js') }}"></script>
 @endsection

@@ -22,6 +22,7 @@ class CreateWebsitesEditedTable extends Migration
             $table->string('name');
             $table->string('url')->unique();
             $table->longText('description');
+            $table->longText('tags');
             $table->integer('subcategory_id')->unsigned();
             $table->foreign('subcategory_id')->references('id')->on('subcategories')->onDelete('cascade');
             $table->timestamps();

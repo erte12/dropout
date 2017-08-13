@@ -24,6 +24,7 @@ class WebsiteEdited extends Model
         'name',
         'url',
         'description',
+        'tags',
         'subcategory_id',
     ];
 

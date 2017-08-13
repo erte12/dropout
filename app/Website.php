@@ -60,8 +60,8 @@ class Website extends Model
     /**
     * Get the website in edit queue.
     */
-    function website()
+    function website_edited()
     {
-        return $this->hasOne('App\EditedWebsite');
+        return $this->hasOne('App\WebsiteEdited');
     }
 }

@@ -1,89 +1,193 @@
 @extends('layouts.app')
 
 @section('content')
+
+<!-- Modals -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Usuwanie strony z katalogu</h4>
+            </div>
+            <div class="modal-body text-justify">
+                Czy na pewno chcesz usunąć stronę:
+                <strong id="deleteWebsiteName"></strong>
+                Strona przestanie być widoczna w katalogu jednak w każdej chwili będziesz mógł ją przywrócić.
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" method="POST" action="">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                    <button type="submit" class="btn btn-danger">Potwierdź</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModalFinal" tabindex="-1" role="dialog" aria-labelledby="deleteModalFinal">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Usuwanie strony z katalogu</h4>
+            </div>
+            <div class="modal-body text-justify">
+                Czy na pewno chcesz usunąć stronę:
+                <strong id="deleteWebsiteNameFinal"></strong>
+                Nie będzie możliwe jej przywrócenie.
+            </div>
+            <div class="modal-footer">
+                <form id="deleteFormFinal" method="POST" action="">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                    <button type="submit" class="btn btn-danger">Potwierdź</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModalRequest" tabindex="-1" role="dialog" aria-labelledby="deleteModalRequest">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Usunięcie prośby o edycję</h4>
+            </div>
+            <div class="modal-body text-justify">
+                Czy na pewno chcesz usunąć prośbę o edycję strony:
+                <strong id="deleteWebsiteNameFinal"></strong>
+                Nie będzie możliwe jej przywrócenie.
+            </div>
+            <div class="modal-footer">
+                <form id="deleteFormRequest" method="POST" action="">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                    <button type="submit" class="btn btn-danger">Potwierdź</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Twoje strony</div>
+                <div class="panel-heading"><a href="{{ url('panel') }}">Panel użytkownika</a> -> <a href="{{ url('panel/websites') }}">Twoje strony</a></div>
                 <div class="panel-body">
-                    <ul class="list-group">
 
-                        @foreach (auth()->user()->websites()->where('active', 1)->get() as $website)
-                            <a class="list-group-item list-group-item-success" href="{{ url('website/' . $website->id) . '/edit' }}">
-                                {{ $website->name }} - {{ $website->url }}
-                                <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right deleteSymbol"></span>
-                            </a>
-                        @endforeach
-                        @foreach (auth()->user()->websites()->where('active', 0)->get() as $website)
-                            <a class="list-group-item list-group-item-info" href="{{ url('website/' . $website->id . '/edit') }}">
-                                {{ $website->name }} - {{ $website->url }}
-                                <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right deleteSymbolFinal"></span>
-                            </a>
-                        @endforeach
-                        @foreach (auth()->user()->websites_edited()->get() as $website)
-                            <a class="list-group-item list-group-item-warning" href="{{ url('website/edited/' . $website->id . '/edit') }}">
-                                {{ $website->name }} - {{ $website->url }}
-                                <!-- <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right deleteSymbolFinal"></span> -->
-                            </a>
-                        @endforeach
-                        @foreach (auth()->user()->websites()->onlyTrashed()->get() as $website)
-                            <a class="list-group-item list-group-item-danger" href="{{ url('website/' . $website->id . '/edit') }}">
-                                {{ $website->name }} - {{ $website->url }}
-                                <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right deleteSymbolFinal"></span>
-                            </a>
-                        @endforeach
-                    </ul>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="panel panel-success">
+                            <div class="panel-heading">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            Strony zaakceptowane
+                            </div>
+                                @if(auth()->user()->websites()->where('active', 1)->count() > 0)
+                                <div class="panel-body panel-scroll">
+                                    <ul class="list-group">
+                                        @foreach (auth()->user()->websites()->where('active', 1)->get() as $website)
+                                        <a class="list-group-item" href="{{ url('website/' . $website->id) . '/edit' }}">
+                                            <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right deleteSymbol"></span>
+                                            <div>{{ $website->name }}</div>
+                                            <div>{{ $website->url }}</div>
 
-                    <!-- Modals -->
-                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal">
-                        <div class="modal-dialog modal-md" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title">Usuwanie strony z katalogu</h4>
+                                        </a>
+                                        @endforeach
+                                    </ul>
                                 </div>
-                                <div class="modal-body text-justify">
-                                    Czy na pewno chcesz usunąć stronę:
-                                    <strong>"{{ $website->name }}"?</strong>
-                                    Strona przestanie być widoczna w katalogu jednak w każdej chwili będziesz mógł ją przywrócić.
+                                @else
+                                <div class="panel-body">
+                                    Pusto
                                 </div>
-                                <div class="modal-footer">
-                                    <form id="deleteForm" method="POST" action="">
-                                        {{ csrf_field() }}
-                                        {{ method_field('DELETE') }}
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
-                                        <button type="submit" class="btn btn-danger">Potwierdź</button>
-                                    </form>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="panel panel-info">
+                            <div class="panel-heading">
+                            <span class="glyphicon glyphicon-time"></span>
+                            Strony oczekujące
+                            </div>
+                                @if(auth()->user()->websites()->where('active', 0)->count() > 0)
+                                <div class="panel-body panel-scroll">
+                                    <ul class="list-group">
+                                        @foreach (auth()->user()->websites()->where('active', 0)->get() as $website)
+                                        <a class="list-group-item" href="{{ url('website/' . $website->id) . '/edit' }}">
+                                            <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right deleteSymbolFinal"></span>
+                                            <div>{{ $website->name }}</div>
+                                            <div>{{ $website->url }}</div>
+                                        </a>
+                                        @endforeach
+                                    </ul>
                                 </div>
+                                @else
+                                <div class="panel-body">
+                                    Pusto
+                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>
-
-                    <div class="modal fade" id="deleteModalFinal" tabindex="-1" role="dialog" aria-labelledby="deleteModalFinal">
-                        <div class="modal-dialog modal-md" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title">Usuwanie strony z katalogu</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="panel panel-warning">
+                            <div class="panel-heading">
+                            <span class="glyphicon glyphicon-wrench"></span>
+                            Prośby o edycję
+                            </div>
+                                @if(auth()->user()->websites_edited()->count() > 0)
+                                <div class="panel-body panel-scroll">
+                                    <ul class="list-group">
+                                        @foreach (auth()->user()->websites_edited()->get() as $website)
+                                        <a class="list-group-item" href="{{ url('website/edited/' . $website->id) . '/edit' }}">
+                                            <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right deleteSymbolRequest"></span>
+                                            <div>{{ $website->name }}</div>
+                                            <div>{{ $website->url }}</div>
+                                        </a>
+                                        @endforeach
+                                    </ul>
                                 </div>
-                                <div class="modal-body text-justify">
-                                    Czy na pewno chcesz usunąć stronę:
-                                    <strong>"{{ $website->name }}"?</strong>
-                                    Nie będzie możliwe jej przywrócenie.
+                                @else
+                                <div class="panel-body">
+                                    Pusto
                                 </div>
-                                <div class="modal-footer">
-                                    <form id="deleteFormFinal" method="POST" action="">
-                                        {{ csrf_field() }}
-                                        {{ method_field('DELETE') }}
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
-                                        <button type="submit" class="btn btn-danger">Potwierdź</button>
-                                    </form>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="panel panel-danger">
+                            <div class="panel-heading">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            Strony usunięte
+                            </div>
+                                @if(auth()->user()->websites()->onlyTrashed()->count() > 0)
+                                <div class="panel-body panel-scroll">
+                                    <ul class="list-group">
+                                        @foreach (auth()->user()->websites()->onlyTrashed()->get() as $website)
+                                        <a class="list-group-item">
+                                            <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right deleteSymbolFinal"></span>
+                                            <div>{{ $website->name }}</div>
+                                            <div>{{ $website->url }}</div>
+                                        </a>
+                                        @endforeach
+                                    </ul>
                                 </div>
+                                @else
+                                <div class="panel-body">
+                                    Pusto
+                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -106,5 +210,15 @@
         $('#deleteFormFinal').attr('action', '{{ url("website/force") }}/' + websiteId);
         $('#deleteModalFinal').modal('show');
     });
+
+    $(".deleteSymbolRequest").click(function() {
+        event.preventDefault();
+        let websiteId = $(this).attr('websiteId');
+        $('#deleteFormRequest').attr('action', '{{ url("website/edited") }}/' + websiteId);
+        $('#deleteModalRequest').modal('show');
+
+    });
+
+    //TODO: Ajax requests
 </script>
 @endsection

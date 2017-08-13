@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use App\Website;
+use App\Tag;
 
 class DatabaseSeeder extends Seeder
 {
@@ -97,14 +99,30 @@ class DatabaseSeeder extends Seeder
                     $last_index = strrpos($url, '/');
 
                     try {
-                        DB::table('websites')->insert([
-                            'user_id' => $faker->numberBetween(1,self::NUMBER_OF_USERS),
+                        $website_id = DB::table('websites')->insertGetId([
+                            'user_id' => $faker->numberBetween(2,self::NUMBER_OF_USERS),
                             'name' => $faker->firstName,
                             'subcategory_id' => $subcategory_id_for_website_to_database,
                             'url' => substr($url, 0, $last_index),
-                            'description' => $faker->paragraph($nbSentences = 3, $variableNbSentences = true),
+                            'description' => $faker->paragraph($nbSentences = 20, $variableNbSentences = true),
                             'active' => $faker->numberBetween(0,1),
+                            'created_at' => $faker->dateTime(),
                         ]);
+
+                        $website = Website::findOrFail($website_id);
+
+                        foreach ($faker->words($nb = 5, $asText = false) as $tag_name) {
+                            $tag = Tag::where(['name' => $tag_name])->first();
+
+                            if(is_null($tag)) {
+                                $website->tags()->create([
+                                    'name' => $tag_name,
+                                ]);
+                            } else {
+                                $website->tags()->attach($tag->id);
+                            }
+                        }
+
                     } catch(PDOException $expection) {
                         continue;
                     }

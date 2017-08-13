@@ -41,9 +41,9 @@ class WebsiteController extends Controller
         $this->validate($request, [
             'name' => 'required|min:5|max:150',
             'url' => 'required|url|active_url|unique:websites,url|max:100',
-            'description' => 'required|min:100|max:1500',
+            'description' => 'required|min:350|max:1500',
             'subcategory_id' => 'required|exists:subcategories,id',
-            'tags' => 'required|min:5',
+            'tags' => ['required'],
         ]);
 
         $website = auth()->user()->websites()->create([
@@ -53,19 +53,7 @@ class WebsiteController extends Controller
             'subcategory_id' => $request->subcategory_id,
         ]);
 
-        $tags = array_map('trim', explode(',', $request->tags));
-
-        foreach ($tags as $tag_name) {
-            $tag = Tag::where(['name' => $tag_name])->first();
-
-            if(is_null($tag)) {
-                $website->tags()->create([
-                    'name' => $tag_name,
-                ]);
-            } else {
-                $website->tags()->attach($tag->id);
-            }
-        }
+        Tag::createTagsForWebsite($request->tags, $website);
 
         return redirect()->route('home')
         ->with('status', 'Twoja strona została pomyślnie wysłana i pojawi się w katalogu po sprawdzeniu jej przez administratora.');
@@ -99,7 +87,7 @@ class WebsiteController extends Controller
      */
     public function edit($id)
     {
-        $website = Website::findOrFail($id);
+        $website = Website::where('id', $id)->with('tags')->first();
         $categories = Category::orderBy('name')->with('subcategories')->get();
         return view('website.edit', compact('website', 'categories'));
     }
@@ -117,6 +105,7 @@ class WebsiteController extends Controller
             'name' => 'required|min:5|max:150',
             'description' => 'required|min:100|max:1500',
             'subcategory_id' => 'required|exists:subcategories,id',
+            'tags' => 'required',
         ]);
 
         // Only superuser is able to modify 'active' column
@@ -127,21 +116,29 @@ class WebsiteController extends Controller
                 'subcategory_id' => $request->subcategory_id,
                 'active' => $request->accept,
             ]);
+            return back();
+
         } else {
             $website = Website::findOrFail($id);
-            $website_edited = WebsiteEdited::updateOrCreate([
-                'url' => $website->url,
-            ], [
-                'website_id' => $website->id,
-                'user_id' => $website->user_id,
-                'name' => $request->name,
-                'description' => $request->description,
-                'subcategory_id' => $request->subcategory_id,
-            ]);
-        }
 
-        if(superuser()) {
-            return redirect()->route('panel');
+            if($website->active == 0) {
+                $website->update([
+                    'name' => $request->name,
+                    'description' => $request->description,
+                    'subcategory_id' => $request->subcategory_id,
+                ]);
+            } else {
+                $website_edited = WebsiteEdited::updateOrCreate([
+                    'url' => $website->url,
+                ], [
+                    'website_id' => $website->id,
+                    'user_id' => $website->user_id,
+                    'name' => $request->name,
+                    'description' => $request->description,
+                    'subcategory_id' => $request->subcategory_id,
+                    'tags' => json_encode($request->tags),
+                ]);
+            }
         }
 
         return redirect()->route('panel.user.websites');

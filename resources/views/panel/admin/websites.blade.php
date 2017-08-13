@@ -3,17 +3,18 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading"><a href="{{ url('panel/') }}" style="color: rgb(51, 51, 51);">Panel użytkownika</a> - Strony</div>
+                <div class="panel-heading"><a href="{{ url('panel/') }}">Panel użytkownika</a> - Strony</div>
                 <div class="panel-body">
                     <ul class="list-group">
-                        @foreach ($websites as $website)
-                            <a class="list-group-item list-group-item" href="{{ url('website/' . $website->id) . '/edit' }}">
-                                {{ $website->name }} - {{ $website->url }}
-                                <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right{{($website->active === 0 || !is_null($website->deleted_at)) ? ' deleteSymbolFinal' : ' deleteSymbol' }}"></span>
-                            </a>
-                        @endforeach
+                    @foreach ($websites as $website)
+                        <!-- TODO: edycja odnośnika -->
+                        <a class="list-group-item list-group-item" href="{{ isset($website->active) ? url('website/' . $website->id . '/edit') : url('website/edited/' . $website->id . '/edit') }}">
+                            {{ $website->name }} - {{ $website->url }}
+                            <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right{{($website->active === 0 || !is_null($website->deleted_at)) ? ' deleteSymbolFinal' : ' deleteSymbol' }}"></span>
+                        </a>
+                    @endforeach
                     </ul>
 
                     <!-- Modals -->
@@ -26,7 +27,7 @@
                                 </div>
                                 <div class="modal-body text-justify">
                                     Czy na pewno chcesz usunąć stronę:
-                                    <strong>"{{ $website->name }}"?</strong>
+                                    <strong>""?</strong>
                                     Strona przestanie być widoczna w katalogu jednak w każdej chwili będziesz mógł ją przywrócić.
                                 </div>
                                 <div class="modal-footer">
@@ -50,7 +51,7 @@
                                 </div>
                                 <div class="modal-body text-justify">
                                     Czy na pewno chcesz usunąć stronę:
-                                    <strong>"{{ $website->name }}"?</strong>
+                                    <strong>""?</strong>
                                     Nie będzie możliwe jej przywrócenie.
                                 </div>
                                 <div class="modal-footer">

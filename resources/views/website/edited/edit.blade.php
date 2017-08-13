@@ -1,13 +1,13 @@
-@extends('layouts.app')
-@section('content')
+@extends('layouts.app') @section('content')
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading"><a href="{{ url('panel') }}">Panel użytkownika</a> -> <a href="{{ url('panel/websites') }}">Twoje strony</a> -> <a href="{{ url('website/' . $website->id . '/edit') }}">Edytuj stronę ({{ $website->name }})</a></div>
+                <div class="panel-heading"><a href="{{ url('panel') }}">Panel użytkownika</a> -> <a href="{{ url('panel/websites') }}">Twoje strony</a> -> <a href="{{ url('website/edited/' . $website->id . '/edit') }}">Edytuj prośbę o edycję ({{ $website->name }})</a></div>
 
                 <div class="panel-body">
-                    <form id="form" class="form-horizontal" method="POST" action="{{ url('website/' . $website->id) }}">
+                    <form id="form" class="form-horizontal" method="POST" action="{{ url('website/edited/' . $website->id) }}">
                         {{ csrf_field() }}
                         <input id="requestType" type="hidden" name="_method" value="PATCH">
 
@@ -25,6 +25,7 @@
                             </div>
                         </div>
 
+                        <!-- URL -->
                         <div class="form-group">
                             <label for="url" class="col-md-4 control-label">Adres strony</label>
 
@@ -64,12 +65,12 @@
                             <div class="col-md-6 col-md-offset-4">
                                 <div class="form-control-list">
                                     <ul id="tagsList" class="list-inline">
-                                    @foreach ($website->tags as $tag)
+                                    @foreach (json_decode($website->tags) as $tag_name)
                                     <li>
-                                        {{ $tag->name }}
+                                        {{ $tag_name }}
                                         <span class="glyphicon glyphicon-remove tag-remove"></span>
                                     </li>
-                                    <input type="hidden" name="tags[]" value="{{ $tag->name }}">
+                                    <input type="hidden" name="tags[]" value="{{ $tag_name }}">
                                     @endforeach
                                     </ul>
                                 </div>
@@ -105,87 +106,70 @@
                             <div class="col-md-6 col-md-offset-4">
 
                                 @if(superuser())
-                                <button type="submit" class="btn btn-primary">
-                                    Zapisz zmiany
-                                </button>
-                                @elseif($website->active == 1)
-                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateModal">
-                                    Wyślij prośbę o edycję
+                                <button type="submit" class="btn btn-warning">
+                                    Zapisz prośbę o edycję
                                 </button>
                                 @else
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal">
-                                    Zapisz zmiany
+                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateModal">
+                                    Zapisz prośbę o edycję
                                 </button>
                                 @endif
 
 
                                 @if (superuser())
-                                <input type="hidden" id="accept" name="accept" value="{{ $website->active }}" />
-                                @if ($website->active === 0)
+                                <input type="hidden" id="accept" name="accept" value="0" />
                                 <button id="acceptButton" type="button" class="btn btn-success">
                                     Zaakceptuj
                                 </button>
-                                @endif
                                 @endif
 
                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
                                     Usuń
                                 </button>
-                            </div>
-                        </div>
 
-                        <!-- Modals -->
-                        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal">
-                            <div class="modal-dialog modal-md" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title">Usuwanie strony z katalogu</h4>
-                                    </div>
-                                    <div class="modal-body text-justify">
-                                        Czy na pewno chcesz usunąć stronę:
-                                        <strong>"{{ $website->name }}"?</strong>
-                                        @if($website->active === 0)
-                                        Nie będzie możliwe jej przywrócenie.
-                                        @else
-                                        Strona przestanie być widoczna w katalogu jednak w każdej chwili będziesz mógł ją przywrócić.
-                                        @endif
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
-                                        <button id="deleteButton" type="button" class="btn btn-danger">Potwierdź</button>
+                                <!-- Modals -->
+                                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal">
+                                    <div class="modal-dialog modal-md" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title">Porzucenie prośby o edycję</h4>
+                                            </div>
+                                            <div class="modal-body text-justify">
+                                                Czy na pewno chcesz usunąć prośbę o edycję strony:
+                                                <strong>"{{ $website->name }}"?</strong>
+                                                Nie będzie możliwe jej przywrócenie.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                                                <button id="deleteButton" type="button" class="btn btn-danger">Potwierdź</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-
-                        @if(!superuser())
-                        <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModal">
-                            <div class="modal-dialog modal-md" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title">Edycja danych strony</h4>
-                                    </div>
-                                    <div class="modal-body text-justify">
-                                        @if($website->active == 1)
-                                        Czy na pewno chcesz wysłać prośbę o edycję danych strony:
-                                        <strong>"{{ $website->name }}"?</strong> Wszelkie zmiany podlegają weryfikacji moderatora. Twoja strona będzie nadal widoczna w katalogu ze starymi danymi. O decyzji administratora zostaniesz poinformowany.
-                                        @else
-                                        Czy na pewno chcesz zapisz dane strony:
-                                        <strong>"{{ $website->name }}"?</strong>
-                                        @endif
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
-                                        <button type="submit" class="btn btn-primary">Potwierdź</button>
+                                @if(!superuser())
+                                <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModal">
+                                    <div class="modal-dialog modal-md" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title">Edycja danych strony</h4>
+                                            </div>
+                                            <div class="modal-body text-justify">
+                                                Czy na pewno chcesz zapisać dane prośby o edycję strony:
+                                                <strong>"{{ $website->name }}"?</strong>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                                                <button type="submit" class="btn btn-primary">Potwierdź</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                @endif
                             </div>
                         </div>
-                        @endif
-
                     </form>
                 </div>
             </div>
@@ -207,9 +191,6 @@
 <script>
     $('#deleteButton').click(function() {
         $('#requestType').attr("value", "DELETE");
-        @if($website->active === 0)
-        $('#form').attr('action', '{{ url("website/force/" . $website->id) }}');
-        @endif
         $('#form').submit();
     });
 </script>

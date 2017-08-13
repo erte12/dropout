@@ -26,7 +26,11 @@ class PanelController extends Controller
      */
     public function index()
     {
-        return view('panel.welcome');
+        $websites = Website::get();
+        $websites_trashed = Website::onlyTrashed()->get();
+        $websites_in_edit = WebsiteEdited::get();
+        $users = User::get();
+        return view('panel.welcome', compact('websites', 'websites_trashed', 'websites_in_edit', 'users'));
     }
 
     /**
@@ -94,5 +98,4 @@ class PanelController extends Controller
         $users = User::where('role_id', '!=', 1)->get();
         return view('panel.admin.users', compact('users'));
     }
-
 }

@@ -40,6 +40,6 @@ class UsersController extends Controller
     public function destroy($id)
     {
         User::findOrFail($id)->delete();
-        return back();
+        return redirect('/');
     }
 }

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     @php
@@ -19,7 +19,7 @@
                     <div class="clearfix">
                         <div class="website">
                             <a href="{{ $website->url }}" >
-                                <img src="http://free.pagepeeker.com/v2/thumbs.php?size=m&url={{ $website->url }}" class="img-responsive thumbnail website" />
+                                <img src="http://free.pagepeeker.com/v2/thumbs.php?size=l&url={{ $website->url }}" class="img-responsive thumbnail website" style="width: 350px; height: auto;">
                             </a>
                         </div>
                         <div class="text-justify">
@@ -45,16 +45,13 @@
                         <li class="list-group-item">
                             <span class="glyphicon glyphicon-time"></span>
                             Dodano:
-                            <a href="{{ url('/subcategory/' . $website->created_at) }}">{{ $website->created_at }}</a>
+                            {{ $website->created_at }}
                         </li>
                         <li class="list-group-item">
                             <span class="glyphicon glyphicon-list"></span>
                             Tagi:
                             @foreach ($website->tags as $tag)
-                                <a href="{{ url('/tags/' . $tag->id) }}">{{ $tag->name }}</a>
-                                @if (! $loop->last)
-                                    ,
-                                @endif
+                                <a href="{{ url('/tags/' . $tag->id) }}">{{ $tag->name }}</a>{{(! $loop->last) ? ',' : ''}}
                             @endforeach
                         </li>
                     </ul>
