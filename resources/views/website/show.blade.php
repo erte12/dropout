@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', $website->name)
+@section('description', $website->description)
+
 @section('content')
 <div class="container">
     <div class="row">

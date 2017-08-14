@@ -1,6 +1,8 @@
 @extends('layouts.app')
-@section('content')
 
+@section('title', 'Panel użytkownika | ' . config('constants.title'))
+
+@section('content')
 <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModal">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">

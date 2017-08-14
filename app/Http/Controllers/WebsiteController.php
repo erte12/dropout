@@ -53,7 +53,7 @@ class WebsiteController extends Controller
             'subcategory_id' => $request->subcategory_id,
         ]);
 
-        Tag::createTagsForWebsite($request->tags, $website);
+        Tag::createTagsForWebsite($request->tags, $website, false);
 
         return redirect()->route('home')
         ->with('status', 'Twoja strona została pomyślnie wysłana i pojawi się w katalogu po sprawdzeniu jej przez administratora.');
@@ -108,25 +108,35 @@ class WebsiteController extends Controller
             'tags' => 'required',
         ]);
 
-        // Only superuser is able to modify 'active' column
+        /* Code if admin logged, only superuser is able to modify 'active' column */
         if(superuser()) {
-            $website = Website::findOrFail($id)->update([
+            $website = Website::findOrFail($id);
+
+            Tag::createTagsForWebsite($request->tags, $website, true);
+
+            $website->update([
                 'name' => $request->name,
                 'description' => $request->description,
                 'subcategory_id' => $request->subcategory_id,
                 'active' => $request->accept,
             ]);
+
             return back();
 
+        /* Code if user logged */
         } else {
             $website = Website::findOrFail($id);
 
+            /* Save changes instantly if website is not active */
             if($website->active == 0) {
                 $website->update([
                     'name' => $request->name,
                     'description' => $request->description,
                     'subcategory_id' => $request->subcategory_id,
                 ]);
+                Tag::createTagsForWebsite($request->tags, $website, true);
+
+            /* Send edit request if website is active */
             } else {
                 $website_edited = WebsiteEdited::updateOrCreate([
                     'url' => $website->url,

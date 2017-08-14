@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Kategoria: ' . $category->name . ' | ' . config('constants.title'))
+
 @section('content')
 <div class="container">
     <div class="row">

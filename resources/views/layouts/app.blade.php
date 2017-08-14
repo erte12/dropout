@@ -8,7 +8,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <!-- Title and description -->
+    <title>@yield('title', config('constants.title'))</title>
+    <meta name="description" content="@yield('description', 'Przyjazny katalog SEO oparty na autorskim skrypcie.')">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

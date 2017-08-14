@@ -26,6 +26,10 @@ class Category extends Model
         return $this->hasMany('App\Subcategory')->orderBy('name');
     }
 
+    /**
+     * Returns all websites that belongs to this category
+     * @return \App\Website
+     */
     function websites()
     {
         return $this->hasManyThrough('App\Website', 'App\Subcategory')->where('active', '=', 1);

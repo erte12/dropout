@@ -131,6 +131,7 @@
                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
                                     Usuń
                                 </button>
+                                <a href="{{url()->previous()}}" class="btn btn-md btn-info">Pomiń zmiany</a>
                             </div>
                         </div>
 

@@ -21,11 +21,18 @@ class Tag extends Model
 
     /**
      * Create tags for given website
+     *
      * @param  array $tags
-     * @param  Website $website
+     * @param  \App\Website $website
+     * @param  bool $mode - if true it reloads tags for given website if any exist
      */
-    public static function createTagsForWebsite($tags, $website)
+
+    public static function createTagsForWebsite($tags, $website, $mode)
     {
+        if($mode == true) {
+            $website->tags()->delete();
+        }
+
     	foreach ($tags as $tag_name) {
             $tag = Tag::where(['name' => $tag_name])->first();
 
@@ -37,5 +44,6 @@ class Tag extends Model
                 $website->tags()->attach($tag->id);
             }
         }
+        return;
     }
 }

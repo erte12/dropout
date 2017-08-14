@@ -39,29 +39,34 @@ class WebsiteEditedController extends Controller
             'tags' => 'required',
         ]);
 
+        /* Code if admin logged (merging changes) */
         if(superuser() && $request->accept == 1) {
             $website_request = WebsiteEdited::findOrFail($id);
+            $website = Website::findOrFail($website_request->website_id);
 
-            $edit_success = Website::findOrFail($website_request->website_id)->update([
+            /* Update website's data */
+            $edit_success = $website->update([
                 'name' => $request->name,
                 'description' => $request->description,
                 'subcategory_id' => $request->subcategory_id,
             ]);
 
+            /* Reload tags for website and delete request if update succeed */
             if($edit_success) {
+                Tag::createTagsForWebsite($request->tags, $website, true);
                 $website_request->delete();
             }
 
             return redirect()->route('panel');
-        } else {
 
+        /* Code if user logged */
+        } else {
             WebsiteEdited::findOrFail($id)->update([
                 'name' => $request->name,
                 'description' => $request->description,
                 'subcategory_id' => $request->subcategory_id,
                 'tags' => json_encode($request->tags),
             ]);
-
         }
 
         if(superuser()) {
