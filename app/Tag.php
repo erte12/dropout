@@ -12,9 +12,10 @@ class Tag extends Model
     ];
 
     /**
-    * Get all tags connected with this website.
+    * Get all websites that contain this tag
+    * @return \App\Website
     */
-    public function tags()
+    public function website()
     {
         return $this->belongsToMany('App\Website');
     }
@@ -26,7 +27,6 @@ class Tag extends Model
      * @param  \App\Website $website
      * @param  bool $mode - if true it reloads tags for given website if any exist
      */
-
     public static function createTagsForWebsite($tags, $website, $mode)
     {
         if($mode == true) {

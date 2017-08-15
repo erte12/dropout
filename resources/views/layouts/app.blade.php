@@ -8,9 +8,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- Title and description -->
+    <!-- Title, keywords and description -->
     <title>@yield('title', config('constants.title'))</title>
     <meta name="description" content="@yield('description', 'Przyjazny katalog SEO oparty na autorskim skrypcie.')">
+    <meta name="keywords" content="@yield('keywords', 'katalog, stron, seo, www, pozycjonowanie, dropout')">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

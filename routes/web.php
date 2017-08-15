@@ -23,10 +23,13 @@ Route::get('/panel/admin/websites/deleted', 'PanelController@admin_websites_dele
 Route::get('/panel/admin/websites/waiting', 'PanelController@admin_websites_waiting')->name('panel.admin.websites.waiting');
 Route::get('/panel/admin/users', 'PanelController@admin_users')->name('panel.admin.users');
 Route::get('/rules', function () { return view('info.rules'); });
-Route::delete('/website/force/{website}', 'WebsiteController@destroy_forever')->name('website.destroy.forever');
-Route::resource('/website', 'WebsiteController', ['except' => 'index']);
-Route::resource('/website/edited', 'WebsiteEditedController', ['except' => ['index', 'create', 'store', 'show']]);
 Route::resource('/category', 'CategoryController', ['except' => 'index']);
 Route::resource('/subcategory', 'SubcategoryController', ['except' => 'index']);
 Route::resource('/user', 'UsersController', ['only' => ['edit', 'update', 'destroy']]);
 Route::get('/search', 'SearchController@websites')->name('search');
+
+/* Websites */
+Route::delete('/website/force/{website}', 'WebsiteController@destroy_forever')->name('website.destroy.forever');
+Route::get('/{slug}-{id}.html', 'WebsiteController@show')->name('website.show');
+Route::resource('/website', 'WebsiteController', ['except' => ['index', 'show']]);
+Route::resource('/website/edited', 'WebsiteEditedController', ['except' => ['index', 'create', 'store', 'show']]);

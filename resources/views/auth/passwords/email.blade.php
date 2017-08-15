@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Odzyskiwanie hasła | ' . config('constants.title'))
+
 @section('content')
 <div class="container">
     <div class="row">

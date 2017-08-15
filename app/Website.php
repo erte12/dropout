@@ -5,12 +5,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-// use Laravel\Scout\Searchable;
 
 class Website extends Model
 {
     use SoftDeletes;
-    // use Searchable;
 
     /**
      * The attributes that should be mutated to dates.
@@ -34,34 +32,61 @@ class Website extends Model
         'active'
     ];
 
-    function subcategory()
+    public function subcategory()
     {
         return $this->belongsTo('App\Subcategory');
-    }
-
-    function category()
-    {
-        return $this->belongsTo('App\Category');
     }
 
     /**
     * Get the user that owns the website.
     */
-    function user()
+    public function user()
     {
         return $this->belongsTo('App\User');
     }
 
-    function tags()
+    public function tags()
     {
         return $this->belongsToMany('App\Tag');
     }
 
     /**
+     * Return website's tags in string with commas
+     * @return string
+     */
+    public function getTagsString()
+    {
+        $tags = $this->tags;
+        $result = '';
+        for($i = 0; $i < $tags->count(); $i++)  {
+            $result = $result . $tags->get($i)->name . (($i < $tags->count() - 1) ? ', ' : '');
+        }
+        return $result;
+    }
+
+    /**
     * Get the website in edit queue.
     */
-    function website_edited()
+    public function website_edited()
     {
         return $this->hasOne('App\WebsiteEdited');
+    }
+
+    /**
+     * Generate sluggified viersion of name
+     * @return string
+     */
+    public function getSlugAttribute(): string
+    {
+        return str_slug($this->name);
+    }
+
+    /**
+     * Generate friendly url
+     * @return string
+     */
+    public function getFriendlyUrlAttribute(): string
+    {
+        return action('WebsiteController@show', [$this->slug, $this->id]);
     }
 }

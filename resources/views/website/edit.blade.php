@@ -1,4 +1,7 @@
 @extends('layouts.app')
+
+@section('title', 'Edytuj stronę: ' . $website->name . ' | ' . config('constants.title'))
+
 @section('content')
 <div class="container">
     <div class="row">

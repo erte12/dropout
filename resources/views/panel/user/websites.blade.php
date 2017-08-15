@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Twoje strony | ' . config('constants.title'))
+
 @section('content')
 
 <!-- Modals -->

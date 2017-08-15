@@ -31,7 +31,7 @@ class WebsiteEdited extends Model
     /**
     * Get the parent website.
     */
-    function website()
+    public function website()
     {
         return $this->hasOne('App\Website');
     }
@@ -39,7 +39,7 @@ class WebsiteEdited extends Model
     /**
     * Get the user that owns the website.
     */
-    function user()
+    public function user()
     {
         return $this->belongsTo('App\User');
     }

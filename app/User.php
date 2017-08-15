@@ -29,16 +29,18 @@ class User extends Authenticatable
 
     /**
     * Get all websites that belongs to user.
+    * @return \App\Website
     */
-    function websites()
+    public function websites()
     {
         return $this->hasMany('App\Website');
     }
 
     /**
     * Get the websites form edit queue.
+    * @return \App\WebsiteEdited
     */
-    function websites_edited()
+    public function websites_edited()
     {
         return $this->hasMany('App\WebsiteEdited');
     }

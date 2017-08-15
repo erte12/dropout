@@ -65,7 +65,7 @@ class WebsiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug, $id)
     {
         $website = Website::where('active', '=', 1)
         ->where('id', '=', $id)
@@ -74,6 +74,10 @@ class WebsiteController extends Controller
 
         if(is_null($website)) {
             abort(404, 'Taka strona nie istnieje');
+        }
+
+        if ($slug !== $website->slug) {
+            return redirect()->to($website->friendly_url);
         }
 
         return view('website.show', compact('website'));

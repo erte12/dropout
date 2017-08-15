@@ -18,14 +18,18 @@ class Subcategory extends Model
 
     /**
      * Returns parent category
-     * @return Category - parent category
+     * @return \App\Category
      */
-    function category()
+    public function category()
     {
         return $this->belongsTo('App\Category');
     }
 
-    function websites()
+    /**
+     * Returns all subcategory's websites
+     * @return \App\Website
+     */
+    public function websites()
     {
         return $this->hasMany('App\Website')->orderBy('created_at', 'desc')->where('active', '=', 1);
     }

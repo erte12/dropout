@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Dodaj stronę | ' . config('constants.title'))
+
 @section('content')
 <div class="container">
     <div class="row">

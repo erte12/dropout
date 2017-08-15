@@ -21,7 +21,7 @@ class Category extends Model
      * Returns all subcategories of given category
      * @return \App\Subcategory
      */
-    function subcategories()
+    public function subcategories()
     {
         return $this->hasMany('App\Subcategory')->orderBy('name');
     }
@@ -30,7 +30,7 @@ class Category extends Model
      * Returns all websites that belongs to this category
      * @return \App\Website
      */
-    function websites()
+    public function websites()
     {
         return $this->hasManyThrough('App\Website', 'App\Subcategory')->where('active', '=', 1);
     }
