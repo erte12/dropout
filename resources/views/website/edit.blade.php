@@ -7,10 +7,10 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading"><a href="{{ url('panel') }}">Panel użytkownika</a> -> <a href="{{ url('panel/websites') }}">Twoje strony</a> -> <a href="{{ url('website/' . $website->id . '/edit') }}">Edytuj stronę ({{ $website->name }})</a></div>
+                <div class="panel-heading"><a href="{{ url('panel') }}">Panel użytkownika</a> -> <a href="{{ route('panel.user.websites') }}">Twoje strony</a> -> <a href="{{ $website->friendly_url_edit }}">Edytuj stronę ({{ $website->name }})</a></div>
 
                 <div class="panel-body">
-                    <form id="form" class="form-horizontal" method="POST" action="{{ url('website/' . $website->id) }}">
+                    <form id="form" class="form-horizontal" method="POST" action="{{ route('website.update', $website->id) }}">
                         {{ csrf_field() }}
                         <input id="requestType" type="hidden" name="_method" value="PATCH">
 
@@ -72,7 +72,7 @@
                                         {{ $tag->name }}
                                         <span class="glyphicon glyphicon-remove tag-remove"></span>
                                     </li>
-                                    <input type="hidden" name="tags[]" value="{{ $tag->name }}">
+                                    <input type="hidden" name="tags[{{ $loop->iteration }}]" value="{{ $tag->name }}">
                                     @endforeach
                                     </ul>
                                 </div>
@@ -189,7 +189,6 @@
                             </div>
                         </div>
                         @endif
-
                     </form>
                 </div>
             </div>
@@ -212,7 +211,7 @@
     $('#deleteButton').click(function() {
         $('#requestType').attr("value", "DELETE");
         @if($website->active === 0)
-        $('#form').attr('action', '{{ url("website/force/" . $website->id) }}');
+        $('#form').attr('action', '{{ url("strona/f/" . $website->id) }}');
         @endif
         $('#form').submit();
     });

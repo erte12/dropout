@@ -6,13 +6,13 @@ textarea#description, textarea#linker {
     resize: none;
 }
 
-.panel-heading a {
-    color: white;
+.panel-default .panel-heading {
+    background-color: #f9fbff;
 }
 
-.panel-heading a:hover {
-    color: white;
-    text-decoration: none;
+.panel-heading {
+    /*font-weight: bold;*/
+    /*font-size: 15px;*/
 }
 
 .website img {

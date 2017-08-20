@@ -11,8 +11,8 @@ class DatabaseSeeder extends Seeder
      * Const numbers of particular elements in database
      * @var integer
      */
-    const NUMBER_OF_CATEGORIES = 30;
-    const NUMBER_OF_SUBCATEGORIES = 10;
+    const NUMBER_OF_CATEGORIES = 15;
+    const NUMBER_OF_SUBCATEGORIES = 8;
     const NUMBER_OF_USERS = 20;
     const MAX_NUMBER_OF_WEBSITES_PER_SUBCATEGORY = 5;
 
@@ -71,8 +71,10 @@ class DatabaseSeeder extends Seeder
          */
         for($category_id = 1; $category_id <= self::NUMBER_OF_CATEGORIES; $category_id++)
         {
+            $name = $faker->unique()->firstName;
             DB::table('categories')->insert([
-                'name' => $faker->firstName,
+                'name' => $name,
+                'slug' => str_slug($name),
             ]);
 
             /**
@@ -80,8 +82,10 @@ class DatabaseSeeder extends Seeder
              */
             for($subcategory_id = 1; $subcategory_id <= self::NUMBER_OF_SUBCATEGORIES; $subcategory_id++)
             {
+                $name = $faker->unique()->lastName;
                 DB::table('subcategories')->insert([
-                    'name' => $faker->firstName,
+                    'name' => $name,
+                    'slug' => str_slug($name),
                     'category_id' => $category_id,
                 ]);
 

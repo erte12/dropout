@@ -16,8 +16,9 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
-    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"/>
 </head>
 <body>
     <div id="app">
@@ -60,8 +61,8 @@
                             <li><a href="{{ route('login') }}">Zaloguj się</a></li>
                             <li><a href="{{ route('register') }}">Zarejestruj się</a></li>
                         @else
-                        <li><a href="{{ url('website/create') }}">Dodaj stronę</a></li>
-                        <li><a href="{{ url('panel') }}">Panel użytkownika</a></li>
+                        <li><a href="{{ route('website.create') }}">Dodaj stronę</a></li>
+                        <li><a href="{{ route('panel') }}">Panel użytkownika</a></li>
                         <li>
                             <a href="{{ route('logout') }}"
                                 onclick="event.preventDefault();

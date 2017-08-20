@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
                 <div class="panel-heading">
                     @php
                         $website_url = str_replace('http://', '', $website->url);
@@ -46,8 +46,8 @@
                                 <li class="list-group-item">
                                     <span class="glyphicon glyphicon-folder-open"></span>
                                     Kategoria:
-                                    <a href="{{ url('/category/' . $website->subcategory->category->id) }}">{{ $website->subcategory->category->name }}</a> ->
-                                    <a href="{{ url('/subcategory/' . $website->subcategory->id) }}">{{ $website->subcategory->name }}</a>
+                                    <a href="{{ $website->subcategory->category->friendly_url }}">{{ $website->subcategory->category->name }}</a> ->
+                                    <a href="{{ $website->subcategory->friendly_url }}">{{ $website->subcategory->name }}</a>
                                 </li>
                                 <li class="list-group-item">
                                     <span class="glyphicon glyphicon-time"></span>

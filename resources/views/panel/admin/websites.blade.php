@@ -12,7 +12,7 @@
                     <ul class="list-group">
                     @foreach ($websites as $website)
                         <!-- TODO: edycja odnośnika -->
-                        <a class="list-group-item list-group-item" href="{{ isset($website->active) ? url('website/' . $website->id . '/edit') : url('website/edited/' . $website->id . '/edit') }}">
+                        <a class="list-group-item list-group-item" href="{{ isset($website->active) ? $website->friendly_url_edit : route('website.edited.edit', $website->id) }}">
                             {{ $website->name }} - {{ $website->url }}
                             <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right{{($website->active === 0 || !is_null($website->deleted_at)) ? ' deleteSymbolFinal' : ' deleteSymbol' }}"></span>
                         </a>
@@ -80,14 +80,14 @@
     $(".deleteSymbol").click(function() {
         event.preventDefault();
         let websiteId = $(this).attr('websiteId');
-        $('#deleteForm').attr('action', '{{ url("website") }}/' + websiteId);
+        $('#deleteForm').attr('action', '{{ url("strona") }}/' + websiteId);
         $('#deleteModal').modal('show');
     });
 
     $(".deleteSymbolFinal").click(function() {
         event.preventDefault();
         let websiteId = $(this).attr('websiteId');
-        $('#deleteFormFinal').attr('action', '{{ url("website/force") }}/' + websiteId);
+        $('#deleteFormFinal').attr('action', '{{ url("strona/f") }}/' + websiteId);
         $('#deleteModalFinal').modal('show');
     });
 </script>

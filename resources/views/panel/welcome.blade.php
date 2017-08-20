@@ -40,7 +40,7 @@
                                 <div class="panel-body">
                                     <ul class="list-group">
                                         @if( !superuser() )
-                                        <a class="list-group-item"href="{{ url('panel/websites') }}">
+                                        <a class="list-group-item" href="{{ route('panel.user.websites') }}">
                                             <span class="glyphicon glyphicon-check"></span>
                                             Twoje strony
                                             <div class="pull-right">
@@ -50,11 +50,11 @@
                                                 <span class="label label-danger">Usunięte: {{ auth()->user()->websites()->onlyTrashed()->count() }}</span>
                                             </div>
                                         </a>
-                                        <a class="list-group-item" href="{{ url('website/create') }}">
+                                        <a class="list-group-item" href="{{ route('website.create') }}">
                                             <span class="glyphicon glyphicon-link"></span>
                                             Dodaj stronę
                                         </a>
-                                        <a class="list-group-item" href="{{ url('rules') }}">
+                                        <a class="list-group-item" href="{{ route('rules') }}">
                                             <span class="glyphicon glyphicon-list-alt"></span>
                                             Regulamin
                                         </a>
@@ -67,24 +67,24 @@
                                             Usuń konto
                                         </a>
                                         @else
-                                        <a class="list-group-item" href="{{ url('/panel/admin/websites/waiting') }}">
+                                        <a class="list-group-item" href="{{ route('panel.admin.websites.waiting') }}">
                                             <span class="glyphicon glyphicon-zoom-in"></span>
                                             Strony w poczekalni <span class="label label-info">{{ $websites->where('active', '=', '0')->count() }}</span>
 
                                         </a>
-                                        <a class="list-group-item" href="{{ url('/panel/admin/websites/edited') }}">
+                                        <a class="list-group-item" href="{{ route('panel.admin.websites.edited') }}">
                                             <span class="glyphicon glyphicon-cog"></span>
                                             Prośby o edycję <span class="label label-warning">{{ $websites_in_edit->count() }}</span>
                                         </a>
-                                        <a class="list-group-item" href="{{ url('/panel/admin/websites/accepted') }}">
+                                        <a class="list-group-item" href="{{ route('panel.admin.websites.accepted') }}">
                                             <span class="glyphicon glyphicon-ok"></span>
                                             Strony zaakceptowane <span class="label label-success">{{ $websites->count() }}</span>
                                         </a>
-                                        <a class="list-group-item" href="{{ url('/panel/admin/websites/deleted') }}">
+                                        <a class="list-group-item" href="{{ route('panel.admin.websites.deleted') }}">
                                             <span class="glyphicon glyphicon-remove"></span>
                                             Strony usunięte <span class="label label-danger">{{ $websites_trashed->count() }}</span>
                                         </a>
-                                        <a class="list-group-item" href="{{ url('panel/admin/users') }}">
+                                        <a class="list-group-item" href="{{ route('panel.admin.users') }}">
                                             <span class="glyphicon glyphicon-user"></span>
                                             Użytkownicy <span class="label label-warning">{{ $users->count() }}</span>
                                         </a>

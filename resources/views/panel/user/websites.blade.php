@@ -95,7 +95,7 @@
                                 <div class="panel-body panel-scroll">
                                     <ul class="list-group">
                                         @foreach (auth()->user()->websites()->where('active', 1)->get() as $website)
-                                        <a class="list-group-item" href="{{ url('website/' . $website->id) . '/edit' }}">
+                                        <a class="list-group-item" href="{{ $website->friendly_url_edit }}">
                                             <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right deleteSymbol"></span>
                                             <div>{{ $website->name }}</div>
                                             <div>{{ $website->url }}</div>
@@ -122,7 +122,7 @@
                                 <div class="panel-body panel-scroll">
                                     <ul class="list-group">
                                         @foreach (auth()->user()->websites()->where('active', 0)->get() as $website)
-                                        <a class="list-group-item" href="{{ url('website/' . $website->id) . '/edit' }}">
+                                        <a class="list-group-item" href="{{ $website->friendly_url_edit }}">
                                             <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right deleteSymbolFinal"></span>
                                             <div>{{ $website->name }}</div>
                                             <div>{{ $website->url }}</div>
@@ -149,7 +149,7 @@
                                 <div class="panel-body panel-scroll">
                                     <ul class="list-group">
                                         @foreach (auth()->user()->websites_edited()->get() as $website)
-                                        <a class="list-group-item" href="{{ url('website/edited/' . $website->id) . '/edit' }}">
+                                        <a class="list-group-item" href="{{ route('website.edited.edit', $website->id) }}">
                                             <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right deleteSymbolRequest"></span>
                                             <div>{{ $website->name }}</div>
                                             <div>{{ $website->url }}</div>
@@ -202,21 +202,21 @@
     $(".deleteSymbol").click(function() {
         event.preventDefault();
         let websiteId = $(this).attr('websiteId');
-        $('#deleteForm').attr('action', '{{ url("website") }}/' + websiteId);
+        $('#deleteForm').attr('action', '{{ url("strona") }}/' + websiteId);
         $('#deleteModal').modal('show');
     });
 
     $(".deleteSymbolFinal").click(function() {
         event.preventDefault();
         let websiteId = $(this).attr('websiteId');
-        $('#deleteFormFinal').attr('action', '{{ url("website/force") }}/' + websiteId);
+        $('#deleteFormFinal').attr('action', '{{ url("strona/f") }}/' + websiteId);
         $('#deleteModalFinal').modal('show');
     });
 
     $(".deleteSymbolRequest").click(function() {
         event.preventDefault();
         let websiteId = $(this).attr('websiteId');
-        $('#deleteFormRequest').attr('action', '{{ url("website/edited") }}/' + websiteId);
+        $('#deleteFormRequest').attr('action', '{{ url("strona-edytowane") }}/' + websiteId);
         $('#deleteModalRequest').modal('show');
 
     });

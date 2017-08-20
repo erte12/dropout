@@ -8,10 +8,10 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                <a href="{{ url('panel') }}">Panel użytkownika</a> -> <a href="{{ url('website/create') }}">Dodaj stronę</a></div>
+                <a href="{{ route('panel') }}">Panel użytkownika</a> -> <a href="{{ route('website.create') }}">Dodaj stronę</a></div>
 
                 <div class="panel-body">
-                    <form id="form" class="form-horizontal" method="POST" action="{{ url('website') }}">
+                    <form id="form" class="form-horizontal" method="POST" action="{{ route('website.store') }}">
                         {{ csrf_field() }}
 
                         <!-- Name -->

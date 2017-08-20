@@ -1,4 +1,4 @@
-<a href="{{ url('category/' . $category->id ) }}" class="list-group-item" style="height: 70px;">
+<a href="{{ $category->friendly_url }}" class="list-group-item" style="height: 70px;">
     <span class="badge">{{ $category->websites->count() }}</span>
     <h5 class="list-group-item-heading">
         <span class="glyphicon glyphicon-folder-open"></span>

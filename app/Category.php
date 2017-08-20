@@ -34,4 +34,22 @@ class Category extends Model
     {
         return $this->hasManyThrough('App\Website', 'App\Subcategory')->where('active', '=', 1);
     }
+
+    /**
+     * Generate sluggified viersion of name
+     * @return string
+     */
+    public function getSlugAttribute(): string
+    {
+        return str_slug($this->name);
+    }
+
+    /**
+     * Generate friendly url
+     * @return string
+     */
+    public function getFriendlyUrlAttribute(): string
+    {
+        return action('CategoryController@show', [$this->slug]);
+    }
 }

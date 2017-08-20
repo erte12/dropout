@@ -44,9 +44,10 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($category_slug)
     {
-        $category = Category::findOrFail($id);
+        $category = Category::where('slug', '=', $category_slug)->first();
+        // $category = Category::findOrFail($id);
         $subcategories = $category->subcategories()->with('websites')->get();
         $websites = $category->websites()->paginate(10);
 
@@ -86,4 +87,6 @@ class CategoryController extends Controller
     {
         //
     }
+
+    
 }

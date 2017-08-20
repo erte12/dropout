@@ -6,9 +6,9 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
                 <div class="panel-heading">
-                    <a href="{{ url('/') }}"><span class="glyphicon glyphicon-home"></span> Strona główna</a> -> <a href="{{ url('/category/' . $category->id) }}">{{ $category->name }}</a>
+                    <a href="{{ url('/') }}"><span class="glyphicon glyphicon-home"></span> Strona główna</a> -> <a href="{{ $category->friendly_url }}">{{ $category->name }}</a>
                 </div>
 
                 <div class="panel-body">
@@ -24,7 +24,7 @@
                 </div>
             </div>
 
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
                 <div class="panel-heading">
                     <a href="{{ url('/') }}"><span class="glyphicon glyphicon-home"></span> Strona główna</a> -> <a href="{{ url('/category/' . $category->id) }}">{{ $category->name }}</a>
                 </div>

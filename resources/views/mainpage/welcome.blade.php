@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
                 <div class="panel-heading">
                     <a href="{{ url('/') }}">
                         <span class="glyphicon glyphicon-home"></span>
@@ -25,7 +25,7 @@
                 </div>
             </div>
 
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
                 <div class="panel-heading">
                     <span class="glyphicon glyphicon-pushpin"></span>
                     Ostatnio dodane

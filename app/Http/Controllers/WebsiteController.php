@@ -43,7 +43,7 @@ class WebsiteController extends Controller
             'url' => 'required|url|active_url|unique:websites,url|max:100',
             'description' => 'required|min:350|max:1500',
             'subcategory_id' => 'required|exists:subcategories,id',
-            'tags' => ['required'],
+            'tags' => 'required|array',
         ]);
 
         $website = auth()->user()->websites()->create([
@@ -65,7 +65,7 @@ class WebsiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($slug, $id)
+    public function show($category, $subcategory, $slug, $id)
     {
         $website = Website::where('active', '=', 1)
         ->where('id', '=', $id)
@@ -76,7 +76,7 @@ class WebsiteController extends Controller
             abort(404, 'Taka strona nie istnieje');
         }
 
-        if ($slug !== $website->slug) {
+        if ($slug !== $website->slug || $subcategory !== $website->subcategory->slug || $category !== $website->subcategory->category->slug) {
             return redirect()->to($website->friendly_url);
         }
 
@@ -89,7 +89,7 @@ class WebsiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($category, $subcategory, $slug, $id)
     {
         $website = Website::where('id', $id)->with('tags')->first();
         $categories = Category::orderBy('name')->with('subcategories')->get();
@@ -109,7 +109,7 @@ class WebsiteController extends Controller
             'name' => 'required|min:5|max:150',
             'description' => 'required|min:100|max:1500',
             'subcategory_id' => 'required|exists:subcategories,id',
-            'tags' => 'required',
+            'tags' => 'required|array',
         ]);
 
         /* Code if admin logged, only superuser is able to modify 'active' column */

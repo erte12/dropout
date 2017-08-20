@@ -87,6 +87,15 @@ class Website extends Model
      */
     public function getFriendlyUrlAttribute(): string
     {
-        return action('WebsiteController@show', [$this->slug, $this->id]);
+        return action('WebsiteController@show', [$this->subcategory->category->slug, $this->subcategory->slug, $this->slug, $this->id]);
+    }
+
+    /**
+     * Generate friendly url to edit form
+     * @return string
+     */
+    public function getFriendlyUrlEditAttribute(): string
+    {
+        return action('WebsiteController@edit', [$this->subcategory->category->slug, $this->subcategory->slug, $this->slug, $this->id]);
     }
 }

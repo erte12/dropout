@@ -4,10 +4,10 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading"><a href="{{ url('panel') }}">Panel użytkownika</a> -> <a href="{{ url('panel/websites') }}">Twoje strony</a> -> <a href="{{ url('website/edited/' . $website->id . '/edit') }}">Edytuj prośbę o edycję ({{ $website->name }})</a></div>
+                <div class="panel-heading"><a href="{{ route('panel') }}">Panel użytkownika</a> -> <a href="{{ route('panel.user.websites') }}">Twoje strony</a> -> <a href="{{ route('website.edited.edit', $website->id) }}">Edytuj prośbę o edycję ({{ $website->name }})</a></div>
 
                 <div class="panel-body">
-                    <form id="form" class="form-horizontal" method="POST" action="{{ url('website/edited/' . $website->id) }}">
+                    <form id="form" class="form-horizontal" method="POST" action="{{ route('website.edited.update', $website->id) }}">
                         {{ csrf_field() }}
                         <input id="requestType" type="hidden" name="_method" value="PATCH">
 
@@ -126,6 +126,7 @@
                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
                                     Usuń
                                 </button>
+                                <a href="{{url()->previous()}}" class="btn btn-md btn-info">Pomiń zmiany</a>
 
                                 <!-- Modals -->
                                 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal">

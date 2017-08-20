@@ -44,9 +44,10 @@ class SubcategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($category_slug, $subcategory_slug)
     {
-        $subcategory = Subcategory::findOrFail($id);
+        $subcategory = Subcategory::where('slug', '=', $subcategory_slug)->first();
+        // $subcategory = Subcategory::findOrFail($id);
         $websites = $subcategory->websites()->paginate(10);
         return view('subcategory.main', compact('websites', 'subcategory'));
     }
