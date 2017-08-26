@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\WebsiteRequest;
 use App\Category;
 use App\Website;
 use App\Tag;
@@ -36,16 +37,8 @@ class WebsiteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(WebsiteRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required|min:5|max:150',
-            'url' => 'required|url|active_url|unique:websites,url|max:100',
-            'description' => 'required|min:350|max:1500',
-            'subcategory_id' => 'required|exists:subcategories,id',
-            'tags' => 'required|array',
-        ]);
-
         $website = auth()->user()->websites()->create([
             'name' => $request->name,
             'url' => $request->url,
@@ -56,7 +49,7 @@ class WebsiteController extends Controller
         Tag::createTagsForWebsite($request->tags, $website, false);
 
         return redirect()->route('home')
-        ->with('status', 'Twoja strona została pomyślnie wysłana i pojawi się w katalogu po sprawdzeniu jej przez administratora.');
+        ->with('status', 'Your website has been sent and will appear in web directory soon.');
     }
 
     /**
@@ -103,15 +96,8 @@ class WebsiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(WebsiteRequest $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required|min:5|max:150',
-            'description' => 'required|min:100|max:1500',
-            'subcategory_id' => 'required|exists:subcategories,id',
-            'tags' => 'required|array',
-        ]);
-
         /* Code if admin logged, only superuser is able to modify 'active' column */
         if(superuser()) {
             $website = Website::findOrFail($id);
@@ -187,5 +173,17 @@ class WebsiteController extends Controller
             return redirect()->route('panel.admin.websites.waiting');
         }
         return redirect()->route('panel.user.websites');
+    }
+
+    /**
+     * Restore the specified resource
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $website = Website::withTrashed()->findOrFail($id)->restore();
+        return back();
     }
 }

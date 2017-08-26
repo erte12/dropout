@@ -13,6 +13,6 @@ return [
     |
     */
 
-    'title' => env('TITLE','Przyjazny katalog SEO | DropOut'),
+    'title' => env('TITLE','SEO Friendly Web Directory | DropOut'),
 
 ];

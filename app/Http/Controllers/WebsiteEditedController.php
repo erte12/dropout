@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateWebsiteRequest;
 use App\Website;
 use App\WebsiteEdited;
 use App\Category;
@@ -30,16 +31,9 @@ class WebsiteEditedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(WebsiteRequest $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required|min:5|max:150',
-            'description' => 'required|min:100|max:1500',
-            'subcategory_id' => 'required|exists:subcategories,id',
-            'tags' => 'required',
-        ]);
-
-        /* Code if admin logged (merging changes) */
+        /* Code if admin logged (merge changes) */
         if(superuser() && $request->accept == 1) {
             $website_request = WebsiteEdited::findOrFail($id);
             $website = Website::findOrFail($website_request->website_id);

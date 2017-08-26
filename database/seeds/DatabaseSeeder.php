@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create('pl_PL');
+        $faker = Faker::create('en_UK');
 
         /**
          * Roles seeds

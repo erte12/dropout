@@ -27,14 +27,14 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading"><a href="{{ url('panel') }}">Panel użytkownika</a></div>
 
                 <div class="panel-body">
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="panel panel-info">
                                 <div class="panel-heading">Menu</div>
                                 <div class="panel-body">
@@ -93,7 +93,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+<!--                         <div class="col-md-6">
                             <div class="panel panel-success">
                                 <div class="panel-heading">Powiadomienia</div>
                                 <div class="panel-body">
@@ -110,7 +110,7 @@
                                     </dl>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

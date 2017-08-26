@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Edytuj stronę: ' . $website->name . ' | ' . config('constants.title'))
+@section('title', 'Edit website: ' . $website->name . ' | ' . config('constants.title'))
 
 @section('content')
 <div class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading"><a href="{{ url('panel') }}">Panel użytkownika</a> -> <a href="{{ route('panel.user.websites') }}">Twoje strony</a> -> <a href="{{ $website->friendly_url_edit }}">Edytuj stronę ({{ $website->name }})</a></div>
+                <div class="panel-heading"><a href="{{ url('panel') }}">User panel</a> -> <a href="{{ route('panel.user.websites') }}">Your websites</a> -> <a href="{{ $website->friendly_url_edit }}">Edit website ({{ $website->name }})</a></div>
 
                 <div class="panel-body">
                     <form id="form" class="form-horizontal" method="POST" action="{{ route('website.update', $website->id) }}">
@@ -16,7 +16,7 @@
 
                         <!-- Name -->
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Nazwa strony</label>
+                            <label for="name" class="col-md-4 control-label">Name</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control" name="name" value="{{ $errors->any() ? old('name') : $website->name }}" required autofocus>
@@ -29,13 +29,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="url" class="col-md-4 control-label">Adres strony</label>
+                            <label for="url" class="col-md-4 control-label">URL</label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" value="{{ $website->url }}" disabled>
                             </div>
                             <div class="col-md-2">
-                                <a href="{{ $website->url }}" class="btn btn-primary" role="button">Odwiedź</a>
+                                <a href="{{ $website->url }}" class="btn btn-primary" role="button">Visit</a>
                             </div>
                         </div>
 
@@ -54,39 +54,53 @@
                         </div>
 
                         <!-- Tags -->
-                        <div class="form-group">
-                            <label for="tagsInput" class="col-md-4 control-label">Tagi</label>
+                        <div class="form-group{{ $errors->has('tags') ? ' has-error' : '' }}">
+                            <label for="tagsInput" class="col-md-4 control-label">Tags (at leats one)</label>
 
                             <div class="col-md-6">
-                                <input id="tagsInput" type="text" class="form-control" value="{{ old('tags') }}">
-
+                                <input id="tagsInput" type="text" class="form-control">
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('tags') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('tags.*') || $errors->has('tags') ? ' has-error' : '' }}">
                             <div class="col-md-6 col-md-offset-4">
                                 <div class="form-control-list">
                                     <ul id="tagsList" class="list-inline">
-                                    @foreach ($website->tags as $tag)
-                                    <li>
-                                        {{ $tag->name }}
-                                        <span class="glyphicon glyphicon-remove tag-remove"></span>
-                                    </li>
-                                    <input type="hidden" name="tags[{{ $loop->iteration }}]" value="{{ $tag->name }}">
-                                    @endforeach
+                                    @if($errors->any())
+                                        @foreach (old('tags') as $tag)
+                                        <li>
+                                            {{ $tag }}
+                                            <span class="glyphicon glyphicon-remove tag-remove"></span>
+                                        </li>
+                                        <input type="hidden" name="tags[{{ $loop->iteration }}]" value="{{ $tag }}">
+                                        @endforeach
+                                    @else
+                                        @foreach ($website->tags as $tag)
+                                        <li>
+                                            {{ $tag->name }}
+                                            <span class="glyphicon glyphicon-remove tag-remove"></span>
+                                        </li>
+                                        <input type="hidden" name="tags[{{ $loop->iteration }}]" value="{{ $tag->name }}">
+                                        @endforeach
+                                    @endif
                                     </ul>
                                 </div>
+                                @if ($errors->has('tags.*'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('tags.*') }}</strong>
+                                </span>
+                                @endif
                                 @if ($errors->has('tags'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('tags') }}</strong>
-                                    </span>
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('tags') }}</strong>
+                                </span>
                                 @endif
                             </div>
                         </div>
 
                         <!-- Categories -->
                         <div class="form-group{{ $errors->has('subcategory_id') ? ' has-error' : '' }}">
-                            <label for="subcategory_id" class="col-md-4 control-label">Kategoria 1</label>
+                            <label for="subcategory_id" class="col-md-4 control-label">Category</label>
 
                             <div class="col-md-6">
                                 <select id="subcategory_id" class="form-control" name="subcategory_id">
@@ -109,15 +123,15 @@
 
                                 @if(superuser())
                                 <button type="submit" class="btn btn-primary">
-                                    Zapisz zmiany
+                                    Save changes
                                 </button>
                                 @elseif($website->active == 1)
                                 <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateModal">
-                                    Wyślij prośbę o edycję
+                                    Send edit request
                                 </button>
                                 @else
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal">
-                                    Zapisz zmiany
+                                    Save changes
                                 </button>
                                 @endif
 
@@ -126,15 +140,15 @@
                                 <input type="hidden" id="accept" name="accept" value="{{ $website->active }}" />
                                 @if ($website->active === 0)
                                 <button id="acceptButton" type="button" class="btn btn-success">
-                                    Zaakceptuj
+                                    Accept
                                 </button>
                                 @endif
                                 @endif
 
                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
-                                    Usuń
+                                    Delete
                                 </button>
-                                <a href="{{url()->previous()}}" class="btn btn-md btn-info">Pomiń zmiany</a>
+                                <a href="{{ route('panel.user.websites')}}" class="btn btn-md btn-info">Cancel</a>
                             </div>
                         </div>
 
@@ -162,7 +176,6 @@
                                 </div>
                             </div>
                         </div>
-
 
                         @if(!superuser())
                         <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModal">
@@ -217,5 +230,5 @@
     });
 </script>
 
-<script src="{{ asset('js/newwebsite.js') }}"></script>
+<script src="{{ asset('js/tags.js') }}"></script>
 @endsection

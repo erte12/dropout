@@ -17,32 +17,30 @@ Auth::routes();
 /* Panel - user */
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/panel', 'PanelController@index')->name('panel');
-Route::get('/panel/strony', 'PanelController@user_websites')->name('panel.user.websites');
-Route::get('/regulamin', function () { return view('info.rules'); })->name('rules');
+Route::get('/panel/websites', 'PanelController@user_websites')->name('panel.user.websites');
+Route::get('/rules', function () { return view('info.rules'); })->name('rules');
 
 /* Panel - admin */
-Route::get('/panel/admin/strony/zaakceptowane', 'PanelController@admin_websites_accepted')->name('panel.admin.websites.accepted');
-Route::get('/panel/admin/strony/oczekujace', 'PanelController@admin_websites_waiting')->name('panel.admin.websites.waiting');
-Route::get('/panel/admin/strony/edytowane', 'PanelController@admin_websites_edited')->name('panel.admin.websites.edited');
-Route::get('/panel/admin/strony/usuniete', 'PanelController@admin_websites_deleted')->name('panel.admin.websites.deleted');
-Route::get('/panel/admin/uzytkownicy', 'PanelController@admin_users')->name('panel.admin.users');
+Route::get('/panel/admin/websites/accepted', 'PanelController@admin_websites_accepted')->name('panel.admin.websites.accepted');
+Route::get('/panel/admin/websites/waiting', 'PanelController@admin_websites_waiting')->name('panel.admin.websites.waiting');
+Route::get('/panel/admin/websites/edited', 'PanelController@admin_websites_edited')->name('panel.admin.websites.edited');
+Route::get('/panel/admin/websites/deleted', 'PanelController@admin_websites_deleted')->name('panel.admin.websites.deleted');
+Route::get('/panel/admin/users', 'PanelController@admin_users')->name('panel.admin.users');
 
 /* Websites */
-Route::delete('/strona/f/{website}', 'WebsiteController@destroy_forever')->name('website.destroy.forever');
+Route::delete('/website/f/{website}', 'WebsiteController@destroy_forever')->name('website.destroy.forever');
 Route::get('/{category}/{subcategory}/{website}-{id}', 'WebsiteController@show')->name('website.show');
-Route::get('/{category}/{subcategory}/{website}-{id}/edytuj', 'WebsiteController@edit')->name('website.edit');
-Route::get('/dodaj-strone', 'WebsiteController@create')->name('website.create');
-Route::post('/strona', 'WebsiteController@store')->name('website.store');
-Route::patch('/strona/{id}', 'WebsiteController@update')->name('website.update');
-Route::delete('/strona/{id}', 'WebsiteController@destroy')->name('website.delete');
+Route::get('/{category}/{subcategory}/{website}-{id}/edit', 'WebsiteController@edit')->name('website.edit');
+Route::get('/add-website', 'WebsiteController@create')->name('website.create');
+Route::resource('/website', 'WebsiteController', ['only' => ['store', 'update', 'destroy']]);
 
 /* Websites edited */
-Route::get('/strony-edytowana/{id}/edytuj', 'WebsiteEditedController@edit')->name('website.edited.edit');
-Route::patch('/strony-edytowana/{id}', 'WebsiteEditedController@update')->name('website.edited.update');
-Route::delete('/strony-edytowana/{id}', 'WebsiteEditedController@destroy')->name('website.edited.delete');
+Route::get('/website-edited/{id}/edit', 'WebsiteEditedController@edit')->name('website.edited.edit');
+Route::patch('/website-edited/{id}', 'WebsiteEditedController@update')->name('website.edited.update');
+Route::delete('/website-edited/{id}', 'WebsiteEditedController@destroy')->name('website.edited.delete');
 
 /* Search */
-Route::get('/szukaj', 'SearchController@websites')->name('search');
+Route::get('/search', 'SearchController@websites')->name('search');
 
 /* Categories */
 Route::get('/{category}', 'CategoryController@show')->name('category.show');

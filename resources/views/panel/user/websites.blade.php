@@ -176,6 +176,7 @@
                                         @foreach (auth()->user()->websites()->onlyTrashed()->get() as $website)
                                         <a class="list-group-item">
                                             <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-remove pull-right deleteSymbolFinal"></span>
+                                            <span websiteId="{{ $website->id }}" class="glyphicon glyphicon-repeat pull-right restoreSymbol"></span>
                                             <div>{{ $website->name }}</div>
                                             <div>{{ $website->url }}</div>
                                         </a>
@@ -202,23 +203,29 @@
     $(".deleteSymbol").click(function() {
         event.preventDefault();
         let websiteId = $(this).attr('websiteId');
-        $('#deleteForm').attr('action', '{{ url("strona") }}/' + websiteId);
+        $('#deleteForm').attr('action', '{{ url("website") }}/' + websiteId);
         $('#deleteModal').modal('show');
     });
 
     $(".deleteSymbolFinal").click(function() {
         event.preventDefault();
         let websiteId = $(this).attr('websiteId');
-        $('#deleteFormFinal').attr('action', '{{ url("strona/f") }}/' + websiteId);
+        $('#deleteFormFinal').attr('action', '{{ url("website/f") }}/' + websiteId);
         $('#deleteModalFinal').modal('show');
     });
 
     $(".deleteSymbolRequest").click(function() {
         event.preventDefault();
         let websiteId = $(this).attr('websiteId');
-        $('#deleteFormRequest').attr('action', '{{ url("strona-edytowane") }}/' + websiteId);
+        $('#deleteFormRequest').attr('action', '{{ url("website-edited") }}/' + websiteId);
         $('#deleteModalRequest').modal('show');
+    });
 
+    $(".deleteSymbolRequest").click(function() {
+        event.preventDefault();
+        let websiteId = $(this).attr('websiteId');
+        $('#deleteFormRequest').attr('action', '{{ url("website-edited") }}/' + websiteId);
+        $('#deleteModalRequest').modal('show');
     });
 
     //TODO: Ajax requests
