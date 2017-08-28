@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Panel użytkownika | ' . config('constants.title'))
+@section('title', 'User panel | ' . config('constants.title'))
 
 @section('content')
 <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModal">
@@ -8,7 +8,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Usunięcie konta</h4>
+                <h4 class="modal-title">Account delete</h4>
             </div>
             <div class="modal-body text-justify">
                 Czy na pewno chcesz usunąć swoje konto? Spowoduje to usunięcie także wszystkich stron z nim powiązanych.
@@ -27,14 +27,14 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading"><a href="{{ url('panel') }}">Panel użytkownika</a></div>
+                <div class="panel-heading"><a href="{{ url('panel') }}">User panel</a></div>
 
                 <div class="panel-body">
 
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="panel panel-info">
                                 <div class="panel-heading">Menu</div>
                                 <div class="panel-body">
@@ -42,58 +42,58 @@
                                         @if( !superuser() )
                                         <a class="list-group-item" href="{{ route('panel.user.websites') }}">
                                             <span class="glyphicon glyphicon-check"></span>
-                                            Twoje strony
+                                            Your websites
                                             <div class="pull-right">
-                                                <span class="label label-success">Zaakceptowane: {{ auth()->user()->websites->where('active', 1)->count() }}</span>
-                                                <span class="label label-info">Oczekujące: {{ auth()->user()->websites->where('active', 0)->count() }}</span>
-                                                <span class="label label-warning">W edycji: {{ auth()->user()->websites_edited()->count() }}</span>
-                                                <span class="label label-danger">Usunięte: {{ auth()->user()->websites()->onlyTrashed()->count() }}</span>
+                                                <span class="label label-success">Accepted: {{ auth()->user()->websites->where('active', 1)->count() }}</span>
+                                                <span class="label label-info">Waiting: {{ auth()->user()->websites->where('active', 0)->count() }}</span>
+                                                <span class="label label-warning">In edit: {{ auth()->user()->websites_edited()->count() }}</span>
+                                                <span class="label label-danger">Deleted: {{ auth()->user()->websites()->onlyTrashed()->count() }}</span>
                                             </div>
                                         </a>
                                         <a class="list-group-item" href="{{ route('website.create') }}">
                                             <span class="glyphicon glyphicon-link"></span>
-                                            Dodaj stronę
+                                            Add website
                                         </a>
                                         <a class="list-group-item" href="{{ route('rules') }}">
                                             <span class="glyphicon glyphicon-list-alt"></span>
-                                            Regulamin
+                                            Rules
                                         </a>
                                         <a class="list-group-item" href="{{ url('user/' . auth()->id() . '/edit') }}">
                                             <span class="glyphicon glyphicon-wrench"></span>
-                                            Edytuj dane użytkownika
+                                            Edit your data
                                         </a>
                                         <a href="" class="list-group-item" data-toggle="modal" data-target="#deleteUserModal">
                                             <span class="glyphicon glyphicon-trash"></span>
-                                            Usuń konto
+                                            Delete account
                                         </a>
                                         @else
                                         <a class="list-group-item" href="{{ route('panel.admin.websites.waiting') }}">
                                             <span class="glyphicon glyphicon-zoom-in"></span>
-                                            Strony w poczekalni <span class="label label-info">{{ $websites->where('active', '=', '0')->count() }}</span>
+                                            Waiting websites <span class="label label-info">{{ $websites->where('active', '=', '0')->count() }}</span>
 
                                         </a>
                                         <a class="list-group-item" href="{{ route('panel.admin.websites.edited') }}">
                                             <span class="glyphicon glyphicon-cog"></span>
-                                            Prośby o edycję <span class="label label-warning">{{ $websites_in_edit->count() }}</span>
+                                            Edit requests <span class="label label-warning">{{ $websites_in_edit->count() }}</span>
                                         </a>
                                         <a class="list-group-item" href="{{ route('panel.admin.websites.accepted') }}">
                                             <span class="glyphicon glyphicon-ok"></span>
-                                            Strony zaakceptowane <span class="label label-success">{{ $websites->count() }}</span>
+                                            Accepted websites <span class="label label-success">{{ $websites->count() }}</span>
                                         </a>
                                         <a class="list-group-item" href="{{ route('panel.admin.websites.deleted') }}">
                                             <span class="glyphicon glyphicon-remove"></span>
-                                            Strony usunięte <span class="label label-danger">{{ $websites_trashed->count() }}</span>
+                                            Deleted websites <span class="label label-danger">{{ $websites_trashed->count() }}</span>
                                         </a>
                                         <a class="list-group-item" href="{{ route('panel.admin.users') }}">
                                             <span class="glyphicon glyphicon-user"></span>
-                                            Użytkownicy <span class="label label-warning">{{ $users->count() }}</span>
+                                            Users <span class="label label-warning">{{ $users->count() }}</span>
                                         </a>
                                         @endif
                                     </ul>
                                 </div>
                             </div>
                         </div>
-<!--                         <div class="col-md-6">
+                        <div class="col-md-6">
                             <div class="panel panel-success">
                                 <div class="panel-heading">Powiadomienia</div>
                                 <div class="panel-body">
@@ -110,7 +110,7 @@
                                     </dl>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </div>

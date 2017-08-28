@@ -141,6 +141,10 @@ class WebsiteController extends Controller
             }
         }
 
+        if(superuser()) {
+            return redirect()->route('panel');
+        }
+
         return redirect()->route('panel.user.websites');
     }
 
@@ -170,8 +174,9 @@ class WebsiteController extends Controller
     {
         $website = Website::withTrashed()->findOrFail($id)->forceDelete();
         if(superuser()) {
-            return redirect()->route('panel.admin.websites.waiting');
+            return redirect()->route('panel');
         }
+
         return redirect()->route('panel.user.websites');
     }
 

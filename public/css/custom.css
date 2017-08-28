@@ -1,3 +1,7 @@
+html {
+    overflow-y: scroll;
+}
+
 #main-page {
     margin-top: 60px;
 }

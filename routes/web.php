@@ -29,8 +29,8 @@ Route::get('/panel/admin/users', 'PanelController@admin_users')->name('panel.adm
 
 /* Websites */
 Route::delete('/website/f/{website}', 'WebsiteController@destroy_forever')->name('website.destroy.forever');
-Route::get('/{category}/{subcategory}/{website}-{id}', 'WebsiteController@show')->name('website.show');
-Route::get('/{category}/{subcategory}/{website}-{id}/edit', 'WebsiteController@edit')->name('website.edit');
+Route::get('/{category}/{subcategory}/{website}/{id}', 'WebsiteController@show')->name('website.show');
+Route::get('/{category}/{subcategory}/{website}/{id}/edit', 'WebsiteController@edit')->name('website.edit');
 Route::get('/add-website', 'WebsiteController@create')->name('website.create');
 Route::resource('/website', 'WebsiteController', ['only' => ['store', 'update', 'destroy']]);
 

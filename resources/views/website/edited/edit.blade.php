@@ -122,11 +122,11 @@
 
                                 @if(superuser())
                                 <button type="submit" class="btn btn-warning">
-                                    Zapisz prośbę o edycję
+                                    Save edit request
                                 </button>
                                 @else
-                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateModal">
-                                    Zapisz prośbę o edycję
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#updateModal">
+                                    Save edit request
                                 </button>
                                 @endif
 
@@ -138,9 +138,9 @@
                                 @endif
 
                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
-                                    Usuń
+                                    Delete
                                 </button>
-                                <a href="{{url()->previous()}}" class="btn btn-md btn-info">Pomiń zmiany</a>
+                                <a href="{{ (superuser()) ? route('panel') : route('panel.user.websites') }}" class="btn btn-md btn-info">Cancel</a>
 
                                 <!-- Modals -->
                                 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal">

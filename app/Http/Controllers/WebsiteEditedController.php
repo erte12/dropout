@@ -64,7 +64,7 @@ class WebsiteEditedController extends Controller
         }
 
         if(superuser()) {
-            return back();
+            return redirect()->route('panel');
         }
 
         return redirect()->route('panel.user.websites');

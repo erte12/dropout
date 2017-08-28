@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     const NUMBER_OF_CATEGORIES = 15;
     const NUMBER_OF_SUBCATEGORIES = 8;
     const NUMBER_OF_USERS = 20;
-    const MAX_NUMBER_OF_WEBSITES_PER_SUBCATEGORY = 5;
+    const MAX_NUMBER_OF_WEBSITES_PER_SUBCATEGORY = 25;
 
     /**
      * Run the database seeds.
@@ -105,7 +105,7 @@ class DatabaseSeeder extends Seeder
                     try {
                         $website_id = DB::table('websites')->insertGetId([
                             'user_id' => $faker->numberBetween(2,self::NUMBER_OF_USERS),
-                            'name' => $faker->firstName,
+                            'name' => $faker->text($maxNbChars = 50),
                             'subcategory_id' => $subcategory_id_for_website_to_database,
                             'url' => substr($url, 0, $last_index),
                             'description' => $faker->paragraph($nbSentences = 20, $variableNbSentences = true),

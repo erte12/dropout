@@ -35,7 +35,7 @@
                                 <input type="text" class="form-control" value="{{ $website->url }}" disabled>
                             </div>
                             <div class="col-md-2">
-                                <a href="{{ $website->url }}" class="btn btn-primary" role="button">Visit</a>
+                                <a href="{{ $website->url }}" class="btn btn-primary" role="button" target="_blank">Visit</a>
                             </div>
                         </div>
 
@@ -126,7 +126,7 @@
                                     Save changes
                                 </button>
                                 @elseif($website->active == 1)
-                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateModal">
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#updateModal">
                                     Send edit request
                                 </button>
                                 @else
@@ -148,7 +148,7 @@
                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
                                     Delete
                                 </button>
-                                <a href="{{ route('panel.user.websites')}}" class="btn btn-md btn-info">Cancel</a>
+                                <a href="{{ (superuser()) ? route('panel') : route('panel.user.websites') }}" class="btn btn-md btn-info">Cancel</a>
                             </div>
                         </div>
 
