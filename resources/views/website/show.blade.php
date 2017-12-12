@@ -36,27 +36,27 @@
                             <ul class="list-group">
                                 <li class="list-group-item">
                                     <span class="glyphicon glyphicon-pencil"></span>
-                                    Nazwa: {{ $website->name }}
+                                    Name: {{ $website->name }}
                                 </li>
                                 <li class="list-group-item">
                                     <span class="glyphicon glyphicon-check"></span>
-                                    Adres:
+                                    URL:
                                     <a href="{{ $website->url }}">{{ $website_url }}</a>
                                 </li>
                                 <li class="list-group-item">
                                     <span class="glyphicon glyphicon-folder-open"></span>
-                                    Kategoria:
+                                    Catory:
                                     <a href="{{ $website->subcategory->category->friendly_url }}">{{ $website->subcategory->category->name }}</a> ->
                                     <a href="{{ $website->subcategory->friendly_url }}">{{ $website->subcategory->name }}</a>
                                 </li>
                                 <li class="list-group-item">
                                     <span class="glyphicon glyphicon-time"></span>
-                                    Dodano:
+                                    Added:
                                     {{ $website->created_at }}
                                 </li>
                                 <li class="list-group-item">
                                     <span class="glyphicon glyphicon-list"></span>
-                                    Tagi:
+                                    Tags:
                                     @foreach ($website->tags as $tag)
                                         <a href="{{ url('/tags/' . $tag->id) }}">{{ $tag->name }}</a>{{(! $loop->last) ? ',' : ''}}
                                     @endforeach
@@ -66,11 +66,11 @@
 
                         <div class="col-md-6">
                             <ul class="list-group">
-                                <li class="list-group-item"><strong>Podlinkuj stronę: {{ $website_url }}</strong></li>
+                                <li class="list-group-item"><strong>Link to: {{ $website_url }}</strong></li>
                                 <li class="list-group-item"><textarea id="linker" rows="4" class="form-control"><a href="{{ url('website/' . $website->id) }}" target="_blank" title="{{ $website->name }}k"><strong>{{ $website->name }}</strong></a></textarea>
                                 </li>
                                 <li class="list-group-item">
-                                    <button id="copyButton" type="button" class="btn btn-md btn-primary">Skopiuj</button>
+                                    <button id="copyButton" type="button" class="btn btn-md btn-primary">Copy</button>
                                 </li>
                             </ul>
                         </div>

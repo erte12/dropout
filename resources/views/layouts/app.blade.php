@@ -47,27 +47,27 @@
                     </ul>
                     <form action="{{ route('search') }}" method="GET" class="navbar-form navbar-left">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Fraza wyszukiwania" name="q">
+                            <input type="text" class="form-control" placeholder="Query" name="q">
                         </div>
-                        <button type="submit" class="btn btn-default">Szukaj</button>
+                        <button type="submit" class="btn btn-default">Search</button>
                     </form>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
 
-                        <li><a href="{{ url('/') }}">Strona główna</a></li>
+                        <li><a href="{{ url('/') }}">Homepage</a></li>
                         @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Zaloguj się</a></li>
-                            <li><a href="{{ route('register') }}">Zarejestruj się</a></li>
+                            <li><a href="{{ route('login') }}">Log in</a></li>
+                            <li><a href="{{ route('register') }}">Register</a></li>
                         @else
-                        <li><a href="{{ route('website.create') }}">Dodaj stronę</a></li>
-                        <li><a href="{{ route('panel') }}">Panel użytkownika</a></li>
+                        <li><a href="{{ route('website.create') }}">Add website</a></li>
+                        <li><a href="{{ route('panel') }}">User panel</a></li>
                         <li>
                             <a href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
-                                Wyloguj ({{ Auth::user()->name }})
+                                Log out ({{ Auth::user()->name }})
                             </a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
